@@ -14,6 +14,7 @@ val server = project
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-http"            % "10.0.7",
       "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.7",
+      "com.typesafe.akka" %% "akka-http-testkit"    % "10.0.7" % "test",
       "org.webjars"       %  "swagger-ui"           % "3.0.10"
     ),
     pipelineStages := Seq(digest, gzip)
