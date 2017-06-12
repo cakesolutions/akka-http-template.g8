@@ -15,6 +15,11 @@ class DocsRoutesSpec extends WordSpec with Matchers with ScalatestRouteTest {
         status.intValue() shouldBe 200
       }
     }
+    "redirect to the index.html when root url is requested" in {
+      Get() ~> routes ~> check {
+        status.intValue() shouldBe 303
+      }
+    }
     "redirect to the index.html when url parameter is missing" in {
       Get("/docs") ~> routes ~> check {
         status.intValue() shouldBe 303

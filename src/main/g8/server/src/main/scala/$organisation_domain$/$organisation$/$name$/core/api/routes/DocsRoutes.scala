@@ -6,6 +6,7 @@ import akka.http.scaladsl.server.Directives._
 class DocsRoutes(swaggerPath: String) {
 
   val routes =
+    // format: off
     path("specs.yml") {
       get {
         getFromResource("$name$.yml", ContentTypes.`text/plain(UTF-8)`)
@@ -28,6 +29,9 @@ class DocsRoutes(swaggerPath: String) {
           getFromResource(swaggerPath + file.toString)
         }
       }
+    } ~
+    pathEndOrSingleSlash {
+      redirect(Uri("/docs/index.html?url=/specs.yml"), StatusCodes.SeeOther)
     }
-
+    // format: on
 }

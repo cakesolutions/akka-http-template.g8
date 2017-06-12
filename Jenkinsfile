@@ -35,5 +35,24 @@ pipeline {
         }
       }
     }
+    stage('Integration test') {
+      steps {
+        ansiColor('xterm') {
+          dir("akkarepo") {
+            script {
+              try {
+                sh "sbt dockerComposeUp"
+                def dockerip = sh(returnStdout: true, script:  $/wget http://169.254.169.254/latest/meta-data/local-ipv4 -qO-/$).trim()
+                withEnv(["APP_HOST=$dockerip"]) {
+                  sh "sbt it:test"
+                }
+              } finally {
+                sh "sbt dockerComposeDown dockerRemove"
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

@@ -6,6 +6,8 @@
 //       Cake projects, otherwise just add dependencies explicitly
 //       in this file.
 
+import net.cakesolutions.CakePlatformKeys.deps
+
 // example akka-http server
 val server = project
   .enablePlugins(BuildInfoPlugin, DockerPlugin, AshScriptPlugin)
@@ -16,7 +18,6 @@ val server = project
       "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.7",
       "com.typesafe.akka" %% "akka-http-testkit"    % "10.0.7" % "test",
       "org.webjars"       %  "swagger-ui"           % "3.0.10"
-    ),
-    pipelineStages := Seq(digest, gzip)
+    ) ++ deps.testing(IntegrationTest)
   )
 

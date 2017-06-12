@@ -11,7 +11,10 @@ import scala.concurrent.Future
 
 trait CoreServer {
 
-  def bind(config: Config)(implicit system: ActorSystem, materializer: Materializer): Future[ServerBinding] = {
+  def bind(config: Config)(
+    implicit system: ActorSystem,
+    materializer: Materializer
+  ): Future[ServerBinding] = {
     val host = config.getString("host")
     val port = config.getInt("port")
     val swaggerPath = config.getString("swagger-ui.path")
@@ -31,10 +34,12 @@ object ServerApp extends App with CoreServer {
 
   val config = ConfigFactory.load("application.conf")
   val server = bind(config.getConfig("core"))
-  sys.addShutdownHook(
-    server
-      .flatMap(_.unbind())
-      .onComplete(_ => system.terminate())
-  ).join()
+  sys
+    .addShutdownHook(
+      server
+        .flatMap(_.unbind())
+        .onComplete(_ => system.terminate())
+    )
+    .join()
 
 }
