@@ -1,11 +1,11 @@
-import net.cakesolutions.CakePlatformPlugin
-
 import sbt._
 import sbt.Keys._
 
 import scoverage.ScoverageKeys._
 import wartremover._
 import sbtbuildinfo.BuildInfoPlugin, BuildInfoPlugin.autoImport._
+
+import net.cakesolutions.CakePlatformPlugin
 
 /** Example of how to apply settings across a build (difficult to do in build.sbt) */
 object ProjectPlugin extends AutoPlugin {

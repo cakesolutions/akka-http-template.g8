@@ -15,6 +15,7 @@ class $name;format="Camel"$IntegrationTest extends RestApiIntegrationTest {
           .map(_.status.intValue() shouldEqual 200)
       }
     }
+
     "Build info" - {
       "should return a JSON object with current version" taggedAs (Docker) in {
         Http()
@@ -22,22 +23,26 @@ class $name;format="Camel"$IntegrationTest extends RestApiIntegrationTest {
           .map(_.status.intValue() shouldEqual 200)
       }
     }
+
     "OpenAPI specs" - {
       "should return the yaml specs" taggedAs (Docker) in {
         Http()
           .singleRequest(HttpRequest(uri = s"\$appUrl/specs.yml"))
           .map(_.status.intValue() shouldEqual 200)
       }
+
       "should redirect to the API docs" taggedAs (Docker) in {
         Http()
           .singleRequest(HttpRequest(uri = s"\$appUrl/docs"))
           .map(_.status.intValue() shouldEqual 303)
       }
+
       "should show the API docs" taggedAs (Docker) in {
         Http()
           .singleRequest(HttpRequest(uri = s"\$appUrl/docs/index.html?url=specs.yml"))
           .map(_.status.intValue() shouldEqual 200)
       }
+
       "default route should re-direct to API docs" taggedAs (Docker) in {
         Http()
           .singleRequest(HttpRequest(uri = s"\$appUrl/"))

@@ -9,10 +9,23 @@ import com.typesafe.config.{Config, ConfigFactory}
 
 import scala.concurrent.Future
 
+/**
+  * TODO:
+  */
 trait CoreServer {
 
-  def bind(config: Config)(
-    implicit system: ActorSystem,
+  /**
+    * TODO:
+    *
+    * @param config
+    * @param system
+    * @param materializer
+    * @return
+    */
+  def bind(
+    config: Config
+  )(implicit
+    system: ActorSystem,
     materializer: Materializer
   ): Future[ServerBinding] = {
     val host = config.getString("host")
@@ -26,14 +39,20 @@ trait CoreServer {
   }
 }
 
+/**
+  * TODO:
+  */
 object ServerApp extends App with CoreServer {
 
-  implicit val system: ActorSystem = ActorSystem("CoreServer")
-  implicit val materializer: ActorMaterializer = ActorMaterializer()
+  private implicit val system: ActorSystem = ActorSystem("CoreServer")
+  private implicit val materializer: ActorMaterializer = ActorMaterializer()
+
   import system.dispatcher
 
-  val config = ConfigFactory.load("application.conf")
-  val server = bind(config.getConfig("core"))
+  // TODO: configuration **needs** to be validated!!!
+  private val config = ConfigFactory.load("application.conf")
+  private val server = bind(config.getConfig("core"))
+
   sys
     .addShutdownHook(
       server

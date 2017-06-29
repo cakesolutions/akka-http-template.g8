@@ -2,6 +2,12 @@ pipeline {
   agent {
     label 'sbt-slave'
   }
+
+  environment {
+    // Ensure that build scripts recognise the environment they are running within
+    CI = 'jenkins'
+  }
+
   stages {
     stage('Generate template') {
       steps {
@@ -13,28 +19,44 @@ pipeline {
         }
       }
     }
+
     stage('Compile') {
       steps {
         ansiColor('xterm') {
           dir("akkarepo") {
             script {
-              sh "sbt compile"
+              sh "sbt clean compile doc"
             }
           }
         }
       }
     }
+
+    stage('Verification') {
+      steps {
+        ansiColor('xterm') {
+          dir("akkarepo") {
+            script {
+              // Since copyright headers are not set up for test projects, we omit a headerCheck here
+              sh "sbt scalastyle scalafmt::test test:scalafmt::test"
+            }
+          }
+        }
+      }
+    }
+
     stage('Test') {
       steps {
         ansiColor('xterm') {
           dir("akkarepo") {
             script {
-              sh "sbt coverage test coverageReport"
+              sh "sbt coverage test coverageAggregate coverageReport"
             }
           }
         }
       }
     }
+
     stage('Integration test') {
       steps {
         ansiColor('xterm') {

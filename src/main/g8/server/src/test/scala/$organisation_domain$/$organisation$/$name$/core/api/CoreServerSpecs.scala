@@ -32,11 +32,13 @@ class CoreServerSpecs extends AsyncWordSpecLike with Matchers with CoreServer {
         .singleRequest(HttpRequest(uri = s"http://localhost:\$port/health"))
         .map(_.status.intValue() shouldBe 200)
     }
+
     "serve the /version endpoint" in {
       Http()
         .singleRequest(HttpRequest(uri = s"http://localhost:\$port/version"))
         .map(_.status.intValue() shouldBe 200)
     }
+
     "serve the /specs.yml" in {
       Http()
         .singleRequest(HttpRequest(uri = s"http://localhost:\$port/specs.yml"))

@@ -3,8 +3,16 @@ package $organisation_domain$.$organisation$.$name$.core.api.routes
 import akka.http.scaladsl.model.{ContentTypes, StatusCodes, Uri}
 import akka.http.scaladsl.server.Directives._
 
+/**
+  * TODO:
+  *
+  * @param swaggerPath
+  */
 class DocsRoutes(swaggerPath: String) {
 
+  /**
+    * TODO:
+    */
   val routes =
     // format: off
     path("specs.yml") {

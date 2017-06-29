@@ -3,31 +3,49 @@ pipeline {
   agent {
     label 'sbt-slave'
   }
+
+  environment {
+    // Ensure that build scripts recognise the environment they are running within
+    CI = 'jenkins'
+  }
+
   stages {
     stage('Compile') {
       steps {
         ansiColor('xterm') {
           script {
-            sh "sbt compile"
+            sh "sbt clean compile doc"
           }
         }
       }
     }
+
+    stage('Verification') {
+      steps {
+        ansiColor('xterm') {
+          script {
+            sh "sbt headerCheck scalastyle scalafmt::test test:scalafmt::test"
+          }
+        }
+      }
+    }
+
     stage('Test') {
       steps {
         ansiColor('xterm') {
           script {
-            sh "sbt coverage test coverageReport"
+            sh "sbt coverage test coverageAggregate coverageReport"
           }
         }
       }
     }
+
     stage('IntegrationTest') {
       steps {
         ansiColor('xterm') {
           script {
             try {
-              sh "sbt dockerComposeUp"
+              sh "sbt coverageOff dockerComposeUp"
               def dockerip = sh(returnStdout: true, script:  \$/wget http://169.254.169.254/latest/meta-data/local-ipv4 -qO-/\$).trim()
               withEnv(["APP_HOST=\$dockerip"]) {
                 sh "sbt integrationTests"
