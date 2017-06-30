@@ -1,7 +1,0 @@
-version: "2.1"
-
-services:
-  server:
-    extends:
-      service: $name$-base
-      file: base.yml

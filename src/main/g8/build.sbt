@@ -9,14 +9,9 @@
 import Dependencies._
 import net.cakesolutions.CakePlatformKeys.PlatformDependencies
 
-// example akka-http server
-val server = project
-  .enablePlugins(
-    CakeBuildInfoPlugin,
-    CakeDockerComposePlugin,
-    CakePublishMavenPlugin,
-    CakeStandardsPlugin
-  )
+lazy val core = project.in(file("library/core"))
+
+lazy val serverMain = project.in(file("mains/server"))
   .enableIntegrationTests
   .settings(
     libraryDependencies ++= Seq(
@@ -31,4 +26,16 @@ val server = project
       validatedConfig,
       Zipkin.akkaHttp
     ) ++ PlatformDependencies.testing(IntegrationTest)
+  )
+
+lazy val root = project.in(file("."))
+  .enablePlugins(
+    CakeBuildInfoPlugin,
+    CakeDockerComposePlugin,
+    CakePublishMavenPlugin,
+    CakeStandardsPlugin
+  )
+  .aggregate(
+    core,
+    serverMain
   )

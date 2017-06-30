@@ -1,0 +1,51 @@
+# Docker Compose Definitions for local Developer Environments
+# - Use this file as follows:
+#   docker-compose -f docker/docker-compose.yml up
+version: "2.1"
+
+# **All** services within this file should be defined with healthchecks
+services:
+  zipkin:
+    # TODO: CO-???: set version using an build.sbt set environment variable
+    #image: openzipkin/zipkin:\${ZIPKIN_VERSION}
+    image: openzipkin/zipkin:1.27.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9411/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      COLLECTOR_PORT: 9410
+      COLLECTOR_SAMPLE_RATE: 1.0
+      QUERY_PORT: 9411
+    ports:
+      - "9411:9411"
+    networks:
+      - internal
+
+  server:
+    # TODO: CO-???: set version using an build.sbt set environment variable
+    #image: $name$/server:\${SERVER_VERSION}
+    image: $name$/server
+    healthcheck:
+      test: ["CMD", "wget", "-qO", "-", "http://localhost:9000/healthcheck"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      SERVER_HOST: "0.0.0.0"
+      SERVER_PORT: 9000
+      ZIPKIN_ADDR: zipkin
+      ZIPKIN_PORT: 9410
+    ports:
+      - "9000:9000"
+    depends_on:
+      zipkin:
+        condition: service_healthy
+    networks:
+      - external
+      - internal
+
+networks:
+  external:
+  internal:

@@ -10,15 +10,6 @@
         </parameters>
     </check>
 
-    <check level="error" class="org.scalastyle.file.HeaderMatchesChecker" enabled="true">
-        <parameters>
-            <parameter name="header"><![CDATA[// Copyright: 2017 https://github.com/cakesolutions/sbt-cake/graphs
-// License: http://www.apache.org/licenses/LICENSE-2.0
-
-]]></parameter>
-        </parameters>
-    </check>
-
     <check level="error" class="org.scalastyle.file.FileLineLengthChecker" enabled="true">
         <parameters>
             <parameter name="maxLineLength"><![CDATA[80]]></parameter>

@@ -14,7 +14,6 @@ class DocsRoutes(swaggerPath: String) {
     * TODO:
     */
   val routes =
-    // format: off
     path("specs.yml") {
       get {
         getFromResource("$name$.yml", ContentTypes.`text/plain(UTF-8)`)
@@ -41,5 +40,4 @@ class DocsRoutes(swaggerPath: String) {
     pathEndOrSingleSlash {
       redirect(Uri("/docs/index.html?url=/specs.yml"), StatusCodes.SeeOther)
     }
-    // format: on
 }
