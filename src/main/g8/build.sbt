@@ -7,14 +7,14 @@
 //       in this file.
 
 import Dependencies._
-import net.cakesolutions.CakePlatformKeys.PlatformDependencies
+import net.cakesolutions.CakePlatformKeys.{ deps => PlatformDependencies }
 
 // example akka-http server
 val server = project
   .enablePlugins(
     CakeBuildInfoPlugin,
     CakeDockerComposePlugin,
-    CakePublishMavenPlugin,
+//    CakePublishMavenPlugin,
     CakeStandardsPlugin
   )
   .enableIntegrationTests
