@@ -7,14 +7,14 @@
 //       in this file.
 
 import Dependencies._
-import net.cakesolutions.CakePlatformKeys.{ deps => PlatformDependencies }
+import net.cakesolutions.CakePlatformKeys.{deps => PlatformDependencies}
 
 // example akka-http server
 val server = project
   .enablePlugins(
     CakeBuildInfoPlugin,
     CakeDockerComposePlugin,
-//    CakePublishMavenPlugin,
+    // CakePublishMavenPlugin,
     CakeStandardsPlugin
   )
   .enableIntegrationTests
@@ -26,9 +26,12 @@ val server = project
       Akka.Http.jsonSpray,
       Akka.Http.testkit % "test",
       cats,
+      typesafeConfig,
       Monix.core,
       swagger,
       validatedConfig,
       Zipkin.akkaHttp
-    ) ++ PlatformDependencies.testing(IntegrationTest)
+    ) ++ PlatformDependencies.testing(IntegrationTest),
+    dependencyOverrides += typesafeConfig,
+    coverageExcludedPackages := ".*\\\\.CommonMain"
   )

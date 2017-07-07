@@ -2,13 +2,13 @@ import sbt._
 
 object Dependencies {
   object Akka {
-    val version = "2.4.16"
+    val version = "2.4.17"
 
     val actor = "com.typesafe.akka" %% "akka-actor" % version
     val contrib = "com.typesafe.akka" %% "akka-contrib" % version
 
     object Http {
-      val version = "10.0.7"
+      val version = "10.0.5"
 
       val core = "com.typesafe.akka" %% "akka-http" % version
       val jsonSpray = "com.typesafe.akka" %% "akka-http-spray-json" % version
@@ -20,7 +20,7 @@ object Dependencies {
   }
 
   val cats = "org.typelevel" %% "cats" % "0.9.0"
-  val config = "com.typesafe" % "config" % "1.3.1"
+  val typesafeConfig = "com.typesafe" % "config" % "1.3.0"
 
   object Monix {
     val version = "2.2.1"
@@ -42,7 +42,7 @@ object Dependencies {
   val validatedConfig = "net.cakesolutions" %% "validated-config" % "1.0.1"
 
   object Zipkin {
-    val version = "0.5.1"
+    val version = "0.6"
 
     val akkaHttp = "com.github.levkhomich" %% "akka-tracing-http" % version
     val core = "com.github.levkhomich" %% "akka-tracing-core" % version

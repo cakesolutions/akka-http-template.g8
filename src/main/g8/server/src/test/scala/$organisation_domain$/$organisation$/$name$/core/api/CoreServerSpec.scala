@@ -4,7 +4,6 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest
 import akka.stream.ActorMaterializer
-import com.typesafe.config.ConfigFactory
 import org.scalatest.{AsyncWordSpecLike, Matchers}
 
 import scala.util.Random
@@ -15,16 +14,11 @@ class CoreServerSpecs extends AsyncWordSpecLike with Matchers with CoreServer {
   implicit val materializer: ActorMaterializer = ActorMaterializer()
   import system.dispatcher
 
+  val host = "localhost"
   val port = 10000 + Random.nextInt(55536)
-  val config = ConfigFactory.parseString(
-    s"""
-       |host = "localhost"
-       |port = \$port
-       |swagger-ui.path = "META-INF/resources/webjars/swagger-ui/3.0.10"
-    """.stripMargin
-  )
+  val swaggerPath = "META-INF/resources/webjars/swagger-ui/3.0.10"
 
-  val server = bind(config)
+  val server = bind(host, port, swaggerPath).firstL.runAsync(monix.execution.Scheduler.global)
 
   "CoreServer" should {
     "serve the /health endpoint" in {
