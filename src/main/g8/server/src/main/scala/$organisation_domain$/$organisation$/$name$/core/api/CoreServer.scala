@@ -4,61 +4,59 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
 import akka.http.scaladsl.server.Directives._
-import akka.stream.{ActorMaterializer, Materializer}
-import com.typesafe.config.{Config, ConfigFactory}
+import akka.stream.ActorMaterializer
+import cats.data.Validated.{Invalid, Valid}
+import com.typesafe.config.Config
+import monix.eval.Task
+import monix.reactive.Observable
+import $organisation_domain$.$organisation$.$name$.application.CommonMain.ConfigurationFailure
+import $organisation_domain$.$organisation$.$name$.application.{ApplicationContext, CommonMain}
 
-import scala.concurrent.Future
-
-/**
-  * TODO:
-  */
 trait CoreServer {
 
   /**
-    * TODO:
+    * Binds a server instance to the specified host and port
     *
-    * @param config
+    * @param host
+    * @param port
+    * @param swaggerPath the path to the web files in the swagger-ui jar
     * @param system
-    * @param materializer
-    * @return
+    * @return an Observable with the ServerBinding
     */
-  def bind(
-    config: Config
-  )(implicit
-    system: ActorSystem,
-    materializer: Materializer
-  ): Future[ServerBinding] = {
-    val host = config.getString("host")
-    val port = config.getInt("port")
-    val swaggerPath = config.getString("swagger-ui.path")
+  def bind(host: String, port: Int, swaggerPath: String)(
+    implicit system: ActorSystem
+  ): Observable[ServerBinding] = {
+    implicit val materializer: ActorMaterializer = ActorMaterializer()
 
     val cores = routes.CoreRoutes.routes
     val docs = new routes.DocsRoutes(swaggerPath).routes
 
-    Http().bindAndHandle(cores ~ docs, host, port)
+    Observable.fromFuture(Http().bindAndHandle(cores ~ docs, host, port))
   }
 }
 
 /**
-  * TODO:
+  * Basic demo server with build info, health and swagger endpoints
   */
-object ServerApp extends App with CoreServer {
+object ServerApp extends CommonMain with CoreServer {
 
-  private implicit val system: ActorSystem = ActorSystem("CoreServer")
-  private implicit val materializer: ActorMaterializer = ActorMaterializer()
-
-  import system.dispatcher
-
-  // TODO: configuration **needs** to be validated!!!
-  private val config = ConfigFactory.load("application.conf")
-  private val server = bind(config.getConfig("core"))
-
-  sys
-    .addShutdownHook(
-      server
-        .flatMap(_.unbind())
-        .onComplete(_ => system.terminate())
-    )
-    .join()
-
+  override protected def application(
+    config: Config
+  )(implicit context: ApplicationContext) = CoreSettings(config) match {
+    case Valid(CoreSettings(host, port, swaggerPath)) =>
+      CommonMain.ApplicationBootstrapping(
+        bind(host, port, swaggerPath)(context.system)
+          .flatMap(_ => Observable.never),
+        Task.deferFuture(
+          context.system
+            .terminate()
+            .map(_ => ())(scala.concurrent.ExecutionContext.global)
+        )
+      )
+    case Invalid(errors) =>
+      CommonMain.ApplicationBootstrapping(
+        Observable.raiseError(ConfigurationFailure(errors)),
+        Task.unit
+      )
+  }
 }

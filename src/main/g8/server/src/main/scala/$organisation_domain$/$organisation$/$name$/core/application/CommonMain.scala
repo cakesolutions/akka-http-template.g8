@@ -3,21 +3,21 @@ package $organisation_domain$.$organisation$.$name$.application
 import java.util.concurrent.atomic.AtomicBoolean
 
 import scala.concurrent.duration._
-import scala.concurrent.{Future, blocking}
+import scala.concurrent.blocking
 import scala.sys.ShutdownHookThread
-import scala.util.Try
 import scala.util.control.NonFatal
-
 import akka.actor.ActorSystem
 import akka.event.LoggingAdapter
 import cakesolutions.config.ValueError
 import cats.data.NonEmptyList
-import com.github.levkhomich.akka.tracing.{TracingExtension, TracingExtensionImpl}
+import com.github.levkhomich.akka.tracing.{
+  TracingExtension,
+  TracingExtensionImpl
+}
 import com.typesafe.config.{Config, ConfigFactory}
 import monix.eval.Task
 import monix.execution.{Cancelable, Scheduler}
 import monix.reactive.Observable
-
 import $organisation_domain$.$organisation$.$name$.utils.ValueDiscard
 
 /**
@@ -30,9 +30,8 @@ object CommonMain {
     *
     * @param errors
     */
-  final case class ConfigurationFailure(
-    errors: NonEmptyList[ValueError]
-  ) extends Exception {
+  final case class ConfigurationFailure(errors: NonEmptyList[ValueError])
+      extends Exception {
     override def toString: String = {
       s"ConfigurationFailure(\${errors.toList.mkString(",")})"
     }
@@ -78,11 +77,9 @@ abstract class CommonMain {
     * @param context application context
     * @return application's bootstrapping workflow and resource cleanup actions
     */
-  protected def application(
-    config: Config
-  )(implicit
-    context: ApplicationContext
-  ): ApplicationBootstrapping
+  protected def application(config: Config)(
+    implicit context: ApplicationContext
+  ): CommonMain.ApplicationBootstrapping
 
   /**
     * Application entrypoint.
@@ -100,10 +97,10 @@ abstract class CommonMain {
     val applicationName =
       getClass.getSimpleName.filter(_.toString.matches("[a-zA-Z0-9]"))
 
-    implicit val system = ActorSystem(applicationName, config)
-    implicit val scheduler = Scheduler(system.dispatcher)
-    implicit val trace = TracingExtension(system)
-    implicit val log = system.log
+    implicit val system: ActorSystem = ActorSystem(applicationName, config)
+    implicit val scheduler: Scheduler = Scheduler(system.dispatcher)
+    implicit val trace: TracingExtensionImpl = TracingExtension(system)
+    implicit val log: LoggingAdapter = system.log
 
     val context =
       ApplicationContext(applicationName, log, scheduler, system, trace)
@@ -118,8 +115,7 @@ abstract class CommonMain {
     ValueDiscard[Cancelable] {
       val appState = application(config)(context)
 
-      appState
-        .workflow
+      appState.workflow
         .doAfterTerminateEval {
           case None =>
             log.info(s"Application \$applicationName shutting down normally")
@@ -139,9 +135,7 @@ abstract class CommonMain {
 
   private def uncaughtExceptionHandler(
     applicationName: String
-  )(implicit
-    log: LoggingAdapter
-  ): Unit = {
+  )(implicit log: LoggingAdapter): Unit = {
     Thread.setDefaultUncaughtExceptionHandler(
       new Thread.UncaughtExceptionHandler {
         def uncaughtException(thread: Thread, exn: Throwable): Unit =
@@ -169,18 +163,13 @@ abstract class CommonMain {
   // scalastyle:off magic.number
   // scalastyle:off while
   @SuppressWarnings(Array("org.wartremover.warts.NonUnitStatements"))
-  private def jvmShutdownHandler(
-  )(implicit
-    log: LoggingAdapter,
+  private def jvmShutdownHandler()(
+    implicit log: LoggingAdapter,
     system: ActorSystem,
     trace: TracingExtensionImpl
   ): Unit = {
     ValueDiscard[ShutdownHookThread] {
       sys.addShutdownHook {
-        // We use the global execution context since we wish to terminate the
-        // actor system!
-        import scala.concurrent.ExecutionContext.Implicits.global
-
         // Docker stopping time window is 10 seconds
         val deadline = 10.seconds.fromNow
         val terminationFuture = system.terminate()

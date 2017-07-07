@@ -8,7 +8,7 @@ import org.scalatest.{AsyncWordSpecLike, Matchers}
 
 import scala.util.Random
 
-class CoreServerSpecs extends AsyncWordSpecLike with Matchers with CoreServer {
+class CoreServerSpec extends AsyncWordSpecLike with Matchers with CoreServer {
 
   implicit val system: ActorSystem = ActorSystem("CoreServer")
   implicit val materializer: ActorMaterializer = ActorMaterializer()
