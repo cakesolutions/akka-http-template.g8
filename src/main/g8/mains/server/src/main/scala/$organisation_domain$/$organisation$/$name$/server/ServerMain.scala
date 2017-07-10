@@ -19,7 +19,7 @@ import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServer
   */
 object ServerMain extends ApplicationBootstrapping {
 
-  /** @inheritdoc */
+  /** @see ApplicationBootstrapping */
   override protected def application(
     config: Config
   )(

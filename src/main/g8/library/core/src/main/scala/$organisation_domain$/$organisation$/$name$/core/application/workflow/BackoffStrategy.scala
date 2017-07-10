@@ -41,11 +41,11 @@ sealed trait BackoffStrategy {
   *   0, 1, 2, 3, 4, 5
   * }}
   *
-  * @param units @inheritdoc
+  * @param units @see [[BackoffStrategy]]
   */
 final case class Linear(units: TimeUnit) extends BackoffStrategy {
 
-  /** @inheritdoc */
+  /** @see [[BackoffStrategy]] */
   override val internalSequence: Stream[BigInt] = {
     BigInt(0) #:: internalSequence.map(n => n + 1)
   }
@@ -55,14 +55,14 @@ final case class Linear(units: TimeUnit) extends BackoffStrategy {
   * A predefined strategy for granular control
   *
   * @param data
-  * @param units @inheritdoc
+  * @param units @see [[BackoffStrategy]]
   */
 final case class Defined(
   data: NonEmptyList[Int Refined Positive],
   units: TimeUnit
 ) extends BackoffStrategy {
 
-  /** @inheritdoc */
+  /** @see [[BackoffStrategy]] */
   override val internalSequence: Stream[BigInt] = {
     Stream(data.toList.map(n => BigInt(n.value)): _*)
   }
@@ -74,11 +74,11 @@ final case class Defined(
   *   1, 1, 2, 3, 5, 8, 13
   * }}
   *
-  * @param units @inheritdoc
+  * @param units @see [[BackoffStrategy]]
   */
 final case class Fibonnaci(units: TimeUnit) extends BackoffStrategy {
 
-  /** @inheritdoc */
+  /** @see [[BackoffStrategy]] */
   override val internalSequence: Stream[BigInt] = {
     BigInt(0) #::
     BigInt(1) #::
@@ -95,14 +95,14 @@ final case class Fibonnaci(units: TimeUnit) extends BackoffStrategy {
   * }}
   *
   * @param factor
-  * @param units @inheritdoc
+  * @param units @see [[BackoffStrategy]]
   */
 final case class Exponential(
   factor: Int Refined Positive,
   units: TimeUnit
 ) extends BackoffStrategy {
 
-  /** @inheritdoc */
+  /** @see [[BackoffStrategy]] */
   override val internalSequence: Stream[BigInt] = {
     val linearSequence = BigInt(0) #:: internalSequence.map(n => n + 1)
 
@@ -117,14 +117,14 @@ final case class Exponential(
   * }}
   *
   * @param factor
-  * @param units @inheritdoc
+  * @param units @see [[BackoffStrategy]]
   */
 final case class Polynomial(
   factor: Int Refined Positive,
   units: TimeUnit
 ) extends BackoffStrategy {
 
-  /** @inheritdoc */
+  /** @see [[BackoffStrategy]] */
   override val internalSequence: Stream[BigInt] = {
     val linearSequence = BigInt(0) #:: internalSequence.map(n => n + 1)
 

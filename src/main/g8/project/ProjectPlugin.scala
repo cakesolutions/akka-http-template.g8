@@ -35,7 +35,7 @@ object ProjectPlugin extends AutoPlugin {
   override val projectSettings = Seq(
     // This avoids using resources to create a POM file.  We don't need it.
     publishArtifact in makePom := false,
-    autoAPIMappings := true,
+    autoAPIMappings in Global := true,
     // scalastyle:off magic.number
     startYear in Global := Some(2017),
     // scalastyle:on magic.number

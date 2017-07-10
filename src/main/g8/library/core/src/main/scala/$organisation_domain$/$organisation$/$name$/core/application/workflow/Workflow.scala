@@ -54,12 +54,12 @@ final case class Zip[X, Y](
   rightWorkflow: Workflow[Y]
 ) extends Workflow[(X, Y)] {
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def bootstrap: Observable[(X, Y)] = {
     leftWorkflow.bootstrap.zip(rightWorkflow.bootstrap)
   }
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def cleanUp: Task[Unit] = {
     Task
       .gatherUnordered(List(leftWorkflow.cleanUp, rightWorkflow.cleanUp))
@@ -80,12 +80,12 @@ final case class Map[X, Y](
   f: X => Y
 ) extends Workflow[Y] {
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def bootstrap: Observable[Y] = {
     workflow.bootstrap.map(f)
   }
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def cleanUp: Task[Unit] = {
     workflow.cleanUp
   }
@@ -103,12 +103,12 @@ final case class FlatMap[X, Y](workflow: Workflow[X], f: X => Workflow[Y])
     extends Workflow[Y] {
   private val flow: Observable[Workflow[Y]] = workflow.bootstrap.map(f)
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def bootstrap: Observable[Y] = {
     flow.map(_.bootstrap).flatten
   }
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def cleanUp: Task[Unit] = {
     flow
       .map(_.cleanUp)
@@ -129,12 +129,12 @@ final case class FlatMap[X, Y](workflow: Workflow[X], f: X => Workflow[Y])
 final case class Filter[X](workflow: Workflow[X], condition: X => Boolean)
     extends Workflow[X] {
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def bootstrap: Observable[X] = {
     workflow.bootstrap.filter(condition)
   }
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def cleanUp: Task[Unit] = {
     workflow.cleanUp
   }
@@ -153,12 +153,12 @@ final case class Collect[X, Y](
   pf: PartialFunction[X, Y]
 ) extends Workflow[Y] {
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def bootstrap: Observable[Y] = {
     workflow.bootstrap.collect(pf)
   }
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def cleanUp: Task[Unit] = {
     workflow.cleanUp
   }
@@ -174,7 +174,7 @@ final case class Collect[X, Y](
 final case class OnError[X](workflow: Workflow[X], strategy: RetryStrategy)
     extends Workflow[X] {
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def bootstrap: Observable[X] = {
     strategy match {
       case RetryUnlimited =>
@@ -197,7 +197,7 @@ final case class OnError[X](workflow: Workflow[X], strategy: RetryStrategy)
     }
   }
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def cleanUp: Task[Unit] = {
     workflow.cleanUp
   }
@@ -219,12 +219,12 @@ final case class TimeoutAfter[X](
   timeout: FiniteDuration
 ) extends Workflow[X] {
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def bootstrap: Observable[X] = {
     workflow.bootstrap.takeByTimespan(timeout)
   }
 
-  /** @inheritdoc */
+  /** @see [[Workflow]] */
   override def cleanUp: Task[Unit] = {
     workflow.cleanUp
   }

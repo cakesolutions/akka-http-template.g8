@@ -12,7 +12,7 @@ final case class ConfigurationFailure(
   errors: NonEmptyList[ValueError]
 ) extends Exception {
 
-  /** @see [[java.lang.Exception]] */
+  /** @see java.lang.Exception */
   override def toString: String = {
     s"ConfigurationFailure(\${errors.toList.mkString(",")})"
   }
