@@ -1,6 +1,8 @@
 import $organisation_domain$.$organisation$.Dependencies._
 import net.cakesolutions.CakePlatformKeys.PlatformDependencies
 
+// TODO: CO-43: SBT Resolvers
+
 // The following Settings need to be defined on a per project basis
 snapshotRepositoryResolver := None
 repositoryResolver := None
