@@ -1,41 +1,44 @@
-// Please read https://github.com/cakesolutions/sbt-cake
-//
-// NOTE: common settings are in project/ProjectPlugin.scala but
-//       anything specific to a project should go in this file. Check
-//       sbt-cake for standard libraryDependencies used in various
-//       Cake projects, otherwise just add dependencies explicitly
-//       in this file.
-
-import Dependencies._
+import net.cakesolutions.Dependencies._
 import net.cakesolutions.CakePlatformKeys.PlatformDependencies
 
-lazy val core = project.in(file("library/core"))
+// The following Settings need to be defined on a per project basis
+snapshotRepositoryResolver := None
+repositoryResolver := None
+issueManagementUrl := None
+issueManagementProject := None
 
-lazy val serverMain = project.in(file("mains/server"))
-  .enableIntegrationTests
+lazy val core = project
+  .in(file("library/core"))
+  .enablePlugins(ProjectPlugin)
   .settings(
     libraryDependencies ++= Seq(
       Akka.actor,
-      Akka.contrib,
       Akka.Http.core,
-      Akka.Http.jsonSpray,
-      Akka.Http.testkit % "test",
       cats,
       Monix.core,
-      swagger,
+      Refined.core,
       validatedConfig,
       Zipkin.akkaHttp
+    )
+  )
+
+lazy val serverMain = project
+  .in(file("mains/server"))
+  .dependsOn(core % "compile->compile;test->test;it->test")
+  .enablePlugins(ProjectDockerBuildPlugin)
+  .enableIntegrationTests
+  .settings(
+    name := "server",
+    mainClass in Compile :=
+      Some("net.cakesolutions.akkarepo.server.ServerMain"),
+    libraryDependencies ++= Seq(
+      Akka.contrib,
+      Akka.Http.jsonSpray,
+      Akka.Http.testkit % "test",
+      swagger
     ) ++ PlatformDependencies.testing(IntegrationTest)
   )
 
-lazy val root = project.in(file("."))
-  .enablePlugins(
-    CakeBuildInfoPlugin,
-    CakeDockerComposePlugin,
-    CakePublishMavenPlugin,
-    CakeStandardsPlugin
-  )
-  .aggregate(
-    core,
-    serverMain
-  )
+lazy val root = project
+  .in(file("."))
+  .aggregate(core, serverMain)

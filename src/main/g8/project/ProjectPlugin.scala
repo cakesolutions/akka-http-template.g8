@@ -1,44 +1,59 @@
+import de.heikoseeberger.sbtheader.FileType
+import de.heikoseeberger.sbtheader.HeaderPlugin.autoImport._
+import net.cakesolutions._
 import sbt._
 import sbt.Keys._
+import sbtbuildinfo.BuildInfoPlugin.autoImport._
 
-import scoverage.ScoverageKeys._
-import wartremover._
-import sbtbuildinfo.BuildInfoPlugin, BuildInfoPlugin.autoImport._
-
-import net.cakesolutions.CakePlatformPlugin
-
-/** Example of how to apply settings across a build (difficult to do in build.sbt) */
+/**
+  * Common project settings.
+  */
 object ProjectPlugin extends AutoPlugin {
-  override def requires = CakePlatformPlugin
-  override def trigger  = allRequirements
 
-  val autoImport = ProjectPluginKeys
-  import autoImport._
+  /** @see [[sbt.AutoPlugin]] */
+  override def requires: Plugins =
+    CakeBuildInfoPlugin &&
+      CakePlatformPlugin &&
+      CakeStandardsPlugin &&
+      CakePublishMavenPlugin &&
+      ReleaseNotesPlugin
 
-  // NOTE: everything in here is applied once, to the entire build
+  /** @see [[sbt.AutoPlugin]] */
   override val buildSettings = Seq(
-    name := "$name$",
-    organization := "$organisation_domain$.$organisation$"
-  )
-
-  // NOTE: everything in here is applied to every project (a better `commonSettings`)
-  override val projectSettings = Seq(
-    // TODO (sbt-cake#8) When that is done, we can remove it from here
-    scalacOptions ++= Seq("-Ypartial-unification"),
-    // we have multiple microservices in this project
-    buildInfoPackage := s"$organisation_domain$.$organisation$.$name$.build",
+    name := "akkarepo",
+    organization := "net.cakesolutions",
+    buildInfoPackage := "net.cakesolutions.akkarepo.build",
     buildInfoKeys := Seq[BuildInfoKey](
       name,
       version,
       scalaVersion,
       sbtVersion
-    ),
-    // NOTE: This avoids using resources to create a POM file.  We don't need it.
-    publishArtifact in makePom := false
+    )
   )
 
-}
-
-object ProjectPluginKeys {
-  // NOTE: anything in here is automatically visible in build.sbt
+  /** @see [[sbt.AutoPlugin]] */
+  override val projectSettings = Seq(
+    // This avoids using resources to create a POM file.  We don't need it.
+    publishArtifact in makePom := false,
+    autoAPIMappings := true,
+    // scalastyle:off magic.number
+    startYear in Global := Some(2017),
+    // scalastyle:on magic.number
+    licenses in Global :=
+      Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
+    headerLicense in Global := Some(
+      HeaderLicense.Custom(
+        """|Copyright: 2017 https://github.com/cakesolutions/sbt-cake/graphs
+           |License: http://www.apache.org/licenses/LICENSE-2.0
+           |""".stripMargin
+      )
+    ),
+    headerMappings in Global :=
+      headerMappings.value ++
+        Map(
+          FileType("sbt") -> HeaderCommentStyle.CppStyleLineComment,
+          HeaderFileType.java -> HeaderCommentStyle.CppStyleLineComment,
+          HeaderFileType.scala -> HeaderCommentStyle.CppStyleLineComment
+        )
+  )
 }

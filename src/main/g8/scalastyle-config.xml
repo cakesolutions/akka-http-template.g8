@@ -34,12 +34,12 @@
     </check>
     <check level="error" class="org.scalastyle.scalariform.PackageObjectNamesChecker" enabled="true">
         <parameters>
-            <parameter name="regex"><![CDATA[^[a-z][A-Za-z]*$]]></parameter>
+            <parameter name="regex"><![CDATA[^[a-z][A-Za-z]*\$]]></parameter>
         </parameters>
     </check>
     <check level="error" class="org.scalastyle.scalariform.MethodNamesChecker" enabled="true">
         <parameters>
-            <parameter name="regex">^_?[a-z][A-Za-z0-9]*$</parameter>
+            <parameter name="regex">^_?[a-z][A-Za-z0-9]*\$</parameter>
         </parameters>
     </check>
     <check level="error" class="org.scalastyle.scalariform.ClassTypeParameterChecker" enabled="true">
@@ -59,7 +59,7 @@
     <check level="error" class="org.scalastyle.scalariform.SpaceAfterCommentStartChecker" enabled="true"/>
     <check level="error" class="org.scalastyle.scalariform.EnsureSingleSpaceBeforeTokenChecker" enabled="true">
         <parameters>
-            <parameter name="tokens">ARROW, EQUALS, ELSE, TRY, CATCH, FINALLY, LARROW, RARROW</parameter>
+            <parameter name="tokens">EQUALS, ELSE, TRY, CATCH, FINALLY, LARROW, RARROW</parameter>
         </parameters>
     </check>
     <check level="error" class="org.scalastyle.scalariform.EnsureSingleSpaceAfterTokenChecker" enabled="true">
