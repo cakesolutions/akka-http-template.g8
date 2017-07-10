@@ -55,5 +55,5 @@ trait RestApiIntegrationTest extends AsyncFreeSpec with Matchers {
     clazz.getName
       .replace('.', '-')
       .replace('_', '-')
-      .filter(_ != '$')
+      .filter(_ != '\$')
 }

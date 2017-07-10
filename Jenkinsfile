@@ -9,7 +9,7 @@ pipeline {
   }
 
   stages {
-    stage('Generate template') {
+    stage('GenerateTemplate') {
       steps {
         ansiColor('xterm') {
           script {
@@ -20,12 +20,24 @@ pipeline {
       }
     }
 
+    stage('Environment') {
+      steps {
+        ansiColor('xterm') {
+          dir("akkarepo") {
+            script {
+              sh "sbt checkExternalBuildTools"
+            }
+          }
+        }
+      }
+    }
+
     stage('Compile') {
       steps {
         ansiColor('xterm') {
           dir("akkarepo") {
             script {
-              sh "sbt clean compile doc"
+              sh "sbt clean compile test:compile it:compile doc"
             }
           }
         }
@@ -37,8 +49,8 @@ pipeline {
         ansiColor('xterm') {
           dir("akkarepo") {
             script {
-              // Since copyright headers are not set up for test projects, we omit a headerCheck here
-              sh "sbt scalastyle scalafmt::test test:scalafmt::test"
+              // Since copyright headers are not set up for test projects, we omit headerCheck, test:headerCheck and it:headerCheck here
+              sh "sbt scalastyle test:scalastyle it:scalastyle sbt:scalafmt::test scalafmt::test test:scalafmt::test it:scalafmt::test"
             }
           }
         }
@@ -50,28 +62,36 @@ pipeline {
         ansiColor('xterm') {
           dir("akkarepo") {
             script {
-              sh "sbt coverage test coverageAggregate coverageReport"
+              // We intentionally avoid any coverage based checks
+              sh "sbt test"
             }
           }
         }
       }
     }
 
-    stage('Integration test') {
+    stage('IntegrationTest') {
       steps {
         ansiColor('xterm') {
           dir("akkarepo") {
             script {
               try {
                 sh "sbt dockerComposeUp"
-                def dockerip = sh(returnStdout: true, script:  $/wget http://169.254.169.254/latest/meta-data/local-ipv4 -qO-/$).trim()
-                withEnv(["APP_HOST=$dockerip"]) {
-                  sh "sbt it:test"
-                }
+                sh "sbt it:test"
               } finally {
                 sh "sbt dockerComposeDown dockerRemove"
               }
             }
+          }
+        }
+      }
+    }
+
+    stage('Publish') {
+      steps {
+        ansiColor('xterm') {
+          dir("akkarepo") {
+            sh "sbt createRelease"
           }
         }
       }

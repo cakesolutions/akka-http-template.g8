@@ -11,7 +11,7 @@
     <if condition='isDefined("LOGSTASH_DESTINATION")'>
         <then>
             <appender name="STASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-                <destination>${LOGSTASH_DESTINATION}</destination>
+                <destination>\${LOGSTASH_DESTINATION}</destination>
 
                 <encoder class="net.logstash.logback.encoder.LogstashEncoder">
                     <timeZone>UTC</timeZone>
