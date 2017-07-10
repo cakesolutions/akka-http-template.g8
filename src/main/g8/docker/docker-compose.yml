@@ -28,7 +28,7 @@ services:
     #image: akkarepo/server:\${SERVER_VERSION}
     image: akkarepo/server
     healthcheck:
-      test: ["CMD", "wget", "-qO", "-", "http://localhost:9000/healthcheck"]
+      test: ["CMD", "wget", "-qO", "-", "http://localhost:9000/health"]
       interval: 5s
       timeout: 5s
       retries: 10

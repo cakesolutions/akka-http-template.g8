@@ -10,13 +10,18 @@ import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServer
 import org.scalatest.{AsyncFreeSpec, Matchers}
 
 object RestApiIntegrationTest {
-  val requiredEnvVars: Map[String, String] =
+  val requiredEnvVars: Map[String, String] = {
+    // In AWS environments, we use the eth0 or local-ipv4 address of the slave
+    // instead of localhost
+    val appHost = sys.env.getOrElse("APP_HOST", "localhost")
+
     Map(
-      "SERVER_HOST" -> "localhost",
+      "SERVER_HOST" -> appHost,
       "SERVER_PORT" -> "9000",
-      "ZIPKIN_HOST" -> "localhost",
+      "ZIPKIN_HOST" -> appHost,
       "ZIPKIN_PORT" -> "9410"
     )
+  }
 
   val optionalEnvVars: Map[String, String] = Map()
 }
