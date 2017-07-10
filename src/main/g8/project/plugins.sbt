@@ -1,4 +1,4 @@
-import net.cakesolutions.Dependencies.SbtPlugins._
+import $organisation_domain$.$organisation$.SbtPlugins._
 
 sourceGenerators in Compile += Def.task {
   val deps = (baseDirectory in Compile).value / "project" / "Dependencies.scala"

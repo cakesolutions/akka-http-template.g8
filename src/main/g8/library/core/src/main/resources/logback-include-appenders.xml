@@ -16,7 +16,7 @@
                 <encoder class="net.logstash.logback.encoder.LogstashEncoder">
                     <timeZone>UTC</timeZone>
                     <fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
-                    <customFields>{"environment": "${environment:-unknown}", "service-version" : "${service-version:-unknown}" }</customFields>
+                    <customFields>{"environment": "\${environment:-unknown}", "service-version" : "\${service-version:-unknown}" }</customFields>
                 </encoder>
             </appender>
 

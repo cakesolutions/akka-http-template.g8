@@ -1,4 +1,4 @@
-import net.cakesolutions.Dependencies._
+import $organisation_domain$.$organisation$.Dependencies._
 import net.cakesolutions.CakePlatformKeys.PlatformDependencies
 
 // The following Settings need to be defined on a per project basis

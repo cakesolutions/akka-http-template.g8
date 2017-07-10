@@ -27,7 +27,7 @@ paths:
           description: |
             Normal response with the build information
           schema:
-            $ref: "#/definitions/BuildInfo"
+            \$ref: "#/definitions/BuildInfo"
   /health:
     get:
       tags:
@@ -40,7 +40,7 @@ paths:
         200:
           description: Normal response
           schema:
-            $ref: "#/definitions/Status"
+            \$ref: "#/definitions/Status"
 definitions:
   Status:
     type: object

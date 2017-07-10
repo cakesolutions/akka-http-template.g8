@@ -1,4 +1,4 @@
-package net.cakesolutions
+package $organisation_domain$.$organisation$
 
 import sbt._
 
