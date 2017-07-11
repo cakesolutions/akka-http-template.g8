@@ -11,9 +11,9 @@ import org.scalatest.{AsyncFreeSpec, Matchers}
 
 object RestApiIntegrationTest {
   val requiredEnvVars: Map[String, String] = {
-    // In AWS environments, we use the eth0 or local-ipv4 address of the slave
+    // In CI environments, we use the eth0 or local-ipv4 address of the slave
     // instead of localhost
-    val appHost = sys.env.getOrElse("APP_HOST", "localhost")
+    val appHost = sys.env.getOrElse("CI_HOST", "localhost")
 
     Map(
       "SERVER_HOST" -> appHost,

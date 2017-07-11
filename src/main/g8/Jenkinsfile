@@ -58,12 +58,13 @@ pipeline {
       steps {
         ansiColor('xterm') {
           script {
+            // In CI environments, we use the eth0 or local-ipv4 address of the slave
+            // instead of localhost
             // TODO: CO-???: ensure coverage is enabled for it:test
-            // TODO: CO-???: rewrite so that we just call it:test here
             try {
               sh "sbt coverageOff dockerComposeUp"
               def dockerip = sh(returnStdout: true, script:  \$/wget http://169.254.169.254/latest/meta-data/local-ipv4 -qO-/\$).trim()
-              withEnv(["APP_HOST=\$dockerip"]) {
+              withEnv(["CI_HOST=\$dockerip"]) {
                 sh "sbt it:test"
               }
             } finally {

@@ -75,10 +75,12 @@ pipeline {
         ansiColor('xterm') {
           dir("akkarepo") {
             script {
+              // In CI environments, we use the eth0 or local-ipv4 address of the slave
+              // instead of localhost
               try {
                 sh "sbt dockerComposeUp"
                 def dockerip = sh(returnStdout: true, script:  $/wget http://169.254.169.254/latest/meta-data/local-ipv4 -qO-/$).trim()
-                withEnv(["APP_HOST=$dockerip"]) {
+                withEnv(["CI_HOST=$dockerip"]) {
                   sh "sbt it:test"
                 }
               } finally {
