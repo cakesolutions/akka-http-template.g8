@@ -84,7 +84,7 @@ pipeline {
                   sh "sbt it:test"
                 }
               } finally {
-                sh "sbt dockerComposeDown dockerRemove"
+                sh "sbt dockerComposeDown"
               }
             }
           }

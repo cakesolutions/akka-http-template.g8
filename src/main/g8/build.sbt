@@ -1,5 +1,5 @@
 import $organisation_domain$.$organisation$.Dependencies._
-import net.cakesolutions.CakePlatformKeys.PlatformDependencies
+import net.cakesolutions.CakePlatformKeys.PlatformBundles
 
 // TODO: CO-43: SBT Resolvers
 
@@ -38,7 +38,7 @@ lazy val serverMain = project
       Akka.Http.jsonSpray,
       Akka.Http.testkit % "test",
       swagger
-    ) ++ PlatformDependencies.testing(IntegrationTest)
+    ) ++ PlatformBundles.testing(IntegrationTest)
   )
 
 lazy val root = project
