@@ -1,0 +1,59 @@
+package $organisation_domain$.$organisation$.$name$.core.application.workflow
+
+package internal
+
+import scala.collection.immutable.StreamIterator
+
+import eu.timepit.refined.api.Refined
+import eu.timepit.refined.numeric.Positive
+import monix.eval.Task
+
+private[workflow] object OnErrorRetryLimited {
+
+  def apply[A](
+    source: Task[A],
+    maxRetries: Int Refined Positive
+  ): Iterator[Task[A]] = {
+    new OnErrorRetry(source, Some(maxRetries))
+  }
+}
+
+private[workflow] object OnErrorRetryUnlimited {
+
+  def apply[A](
+    source: Task[A]
+  ): Iterator[Task[A]] = {
+    new OnErrorRetry(source, None)
+  }
+}
+
+private final class OnErrorRetry[A](
+  source: Task[A],
+  maxRetries: Option[Int Refined Positive]
+) extends Iterator[Task[A]] {
+
+  private[this] val taskGen = {
+    val gen = new StreamIterator(backoff.sequenceGenerator)
+    val limitedGen = maxRetries.fold(gen)(n => gen.take(n.value))
+
+    limitedGen.map(_ => source)
+  }
+
+  /** @see [[Iterator]] */
+  def hasNext: Boolean = {
+    true
+  }
+
+  /** @see [[Iterator]] */
+  def next(): Task[A] = {
+    if (taskGen.hasNext) {
+      taskGen.next()
+    } else {
+      Task.raiseError(
+        new RetryExceededException(
+          s"Limited retry failed after \${maxRetries.get.value} tries"
+        )
+      )
+    }
+  }
+}

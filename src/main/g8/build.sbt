@@ -1,5 +1,6 @@
-import $organisation_domain$.$organisation$.Dependencies._
 import net.cakesolutions.CakePlatformKeys.PlatformBundles
+
+import $organisation_domain$.$organisation$.Dependencies._
 
 // TODO: CO-43: SBT Resolvers
 

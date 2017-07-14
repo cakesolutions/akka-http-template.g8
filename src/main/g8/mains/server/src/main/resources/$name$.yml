@@ -1,9 +1,9 @@
 swagger: '2.0'
 info:
   version: 1.0
-  title: akkarepo
+  title: $name;format="Camel"$
   description: |
-    This specification specifies the akkarepo API.
+    This specification specifies the $name;format="Camel"$ API.
 basePath: /
 schemes:
   - http

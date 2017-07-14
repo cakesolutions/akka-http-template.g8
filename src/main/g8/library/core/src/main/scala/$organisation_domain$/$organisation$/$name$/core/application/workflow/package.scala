@@ -1,6 +1,8 @@
 package $organisation_domain$.$organisation$.$name$.core.application
 
-import scala.concurrent.duration.FiniteDuration
+import monix.eval.Task
+
+import $organisation_domain$.$organisation$.$name$.core.application.workflow.internal._
 
 /**
   * TODO:
@@ -13,80 +15,31 @@ package object workflow {
     * @param workflow
     * @tparam X
     */
-  implicit class WorkflowHelpers[X](workflow: Workflow[X]) {
-
-    /**
-      * TODO:
-      *
-      * @param that
-      * @tparam Y
-      * @return
-      */
-    def zip[Y](that: Workflow[Y]): Workflow[(X, Y)] = {
-      Zip(workflow, that)
+  implicit class OnError[X](workflow: Task[X]) {
+    def onError(strategy: RetryStrategy): Task[X] = {
+      new OnErrorHelper(workflow, strategy).task()
     }
 
-    /**
-      * TODO:
-      *
-      * @param f
-      * @tparam Y
-      * @return
-      */
-    def map[Y](f: X => Y): Workflow[Y] = {
-      Map(workflow, f)
-    }
+    private class OnErrorHelper(workflow: Task[X], strategy: RetryStrategy) {
+      val taskGen: Iterator[Task[X]] = {
+        strategy match {
+          case RetryUnlimited =>
+            OnErrorRetryUnlimited(workflow)
 
-    /**
-      * TODO:
-      *
-      * @param f
-      * @tparam Y
-      * @return
-      */
-    def flatMap[Y](f: X => Workflow[Y]): Workflow[Y] = {
-      FlatMap(workflow, f)
-    }
+          case RetryLimited(n) =>
+            OnErrorRetryLimited(workflow, n)
 
-    /**
-      * TODO:
-      *
-      * @param cond
-      * @return
-      */
-    def filter(cond: X => Boolean): Workflow[X] = {
-      Filter(workflow, cond)
-    }
+          case RetryUnlimitedWithBackoff(backoff, jitter) =>
+            OnErrorRetryUnlimitedWithBackoff(workflow, backoff, jitter)
 
-    /**
-      * TODO:
-      *
-      * @param pf
-      * @tparam Y
-      * @return
-      */
-    def collect[Y](pf: PartialFunction[X, Y]): Workflow[Y] = {
-      Collect(workflow, pf)
-    }
+          case RetryLimitedWithBackoff(n, backoff, jitter) =>
+            OnErrorRetryLimitedWithBackoff(workflow, n, backoff, jitter)
+        }
+      }
 
-    /**
-      * TODO:
-      *
-      * @param strategy
-      * @return
-      */
-    def onError(strategy: RetryStrategy): Workflow[X] = {
-      OnError(workflow, strategy)
-    }
-
-    /**
-      * TODO:
-      *
-      * @param timeout
-      * @return
-      */
-    def timeoutAfter(timeout: FiniteDuration): Workflow[X] = {
-      TimeoutAfter(workflow, timeout)
+      def task(): Task[X] = {
+        taskGen.next().onErrorHandleWith(_ => task())
+      }
     }
   }
 }

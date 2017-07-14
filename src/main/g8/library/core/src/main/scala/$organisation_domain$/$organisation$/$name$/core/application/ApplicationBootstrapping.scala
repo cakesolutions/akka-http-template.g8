@@ -12,10 +12,11 @@ import akka.actor.ActorSystem
 import akka.event.LoggingAdapter
 import com.github.levkhomich.akka.tracing.{TracingExtension, TracingExtensionImpl}
 import com.typesafe.config.{Config, ConfigFactory}
-import monix.execution.{Cancelable, Scheduler}
-import $organisation_domain$.$organisation$.$name$.core.application.workflow.Workflow
-import $organisation_domain$.$organisation$.$name$.core.utils.ValueDiscard
+import monix.eval.Task
+import monix.execution.{CancelableFuture, Scheduler}
 import org.slf4j.LoggerFactory
+
+import $organisation_domain$.$organisation$.$name$.core.utils.ValueDiscard
 
 // \$COVERAGE-OFF\$
 
@@ -45,7 +46,7 @@ trait ApplicationBootstrapping {
     */
   protected def application(
     config: Config
-  )(implicit globalContext: ApplicationGlobalContext): Workflow[Unit]
+  )(implicit globalContext: ApplicationGlobalContext): Task[Unit]
 
   /**
     * Application entrypoint.
@@ -94,23 +95,19 @@ trait ApplicationBootstrapping {
 
         // TODO: CO-111: Generate startup log information
 
-        ValueDiscard[Cancelable] {
-          val service = application(config)(globalContext)
-
-          service.bootstrap
-            .doOnErrorEval(_ => service.cleanUp)
-            .doAfterTerminate {
+        ValueDiscard[CancelableFuture[Unit]] {
+          application(config)(globalContext)
+            .runAsync {
               case None =>
                 log.info(s"Application \$applicationName started")
               case Some(exn) =>
                 log.error(
-                  exn,
-                  s"Application \$applicationName shutting down due to an error"
+                  s"Application \$applicationName shutting down due to an error",
+                  exn
                 )
                 systemExitAllowed.set(true)
                 sys.exit(1)
             }
-            .subscribe()
         }
     }
   }
@@ -133,8 +130,8 @@ trait ApplicationBootstrapping {
               sys.exit(2)
             case _: Throwable =>
               log.error(
-                exn,
-                s"Fatal exception thrown by application \$applicationName"
+                s"Fatal exception thrown by application \$applicationName",
+                exn
               )
               systemExitAllowed.set(true)
               sys.exit(3)

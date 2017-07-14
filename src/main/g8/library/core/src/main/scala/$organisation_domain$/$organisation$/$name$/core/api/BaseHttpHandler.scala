@@ -1,6 +1,6 @@
 package $organisation_domain$.$organisation$.$name$.core.api
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
@@ -11,9 +11,8 @@ import akka.stream.{ActorMaterializer, Materializer}
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric._
 import monix.eval.Task
-import monix.reactive.Observable
+
 import $organisation_domain$.$organisation$.$name$.core.application.ApplicationGlobalContext
-import $organisation_domain$.$organisation$.$name$.core.application.workflow.Layer
 
 /**
   * Common Http handler bootstrapping.
@@ -39,9 +38,10 @@ object BaseHttpHandler {
     port: Int Refined Positive
   )(
     implicit globalContext: ApplicationGlobalContext
-  ): Layer[Unit] = {
+  ): Task[Unit] = {
     implicit val system: ActorSystem = globalContext.system
     implicit val materializer: Materializer = ActorMaterializer()
+    implicit val ec: ExecutionContext = system.dispatcher
 
     val route =
       logRequestResult(globalContext.applicationName) {
@@ -51,22 +51,23 @@ object BaseHttpHandler {
           }
         }
       }
-    val httpSocketBind =
+
+    def httpSocketBind: Future[Http.ServerBinding] =
       Http().bindAndHandle(Route.handlerFlow(route), hostname, port.value)
 
-    // We unbind using the global execution context as the actor system may
-    // already have died
-    val httpCleanUp = Task.deferFuture {
+    def httpCleanUp: Task[Unit] = Task.deferFutureAction { implicit ec =>
       httpSocketBind
-        .flatMap(_.unbind())(ExecutionContext.global)
-    }
-    val httpBootstrap = {
-      implicit val ec: ExecutionContext = globalContext.system.dispatcher
-
-      Observable.fromFuture(httpSocketBind.map(_ => ()))
+        .flatMap(_.unbind())
     }
 
-    Layer(httpBootstrap, httpCleanUp)
+    Task
+      .fromFuture(httpSocketBind.map(_ => ()))
+      .doOnFinish {
+        case None =>
+          Task.unit
+        case Some(_) =>
+          httpCleanUp
+      }
   }
 
   private def routeReject: StandardRoute =

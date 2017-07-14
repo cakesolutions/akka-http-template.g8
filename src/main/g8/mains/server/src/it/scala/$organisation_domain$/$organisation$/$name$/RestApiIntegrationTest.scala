@@ -5,9 +5,10 @@ import scala.concurrent.ExecutionContext
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import com.typesafe.config.Config
+import org.scalatest.{AsyncFreeSpec, Matchers}
+
 import $organisation_domain$.$organisation$.$name$.core.config.ConfigHelper
 import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServerConfig
-import org.scalatest.{AsyncFreeSpec, Matchers}
 
 object RestApiIntegrationTest {
   val requiredEnvVars: Map[String, String] = {

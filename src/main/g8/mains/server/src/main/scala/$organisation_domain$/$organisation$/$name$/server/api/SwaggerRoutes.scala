@@ -3,6 +3,7 @@ package $organisation_domain$.$organisation$.$name$.server.api
 import akka.http.scaladsl.model.{ContentTypes, StatusCodes, Uri}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
+
 import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServerConfig
 
 /**
@@ -18,7 +19,7 @@ object SwaggerRoutes {
   def apply(swaggerPath: ValidatedServerConfig.SwaggerPathString): Route =
     path("specs.yml") {
       get {
-        getFromResource("akkarepo.yml", ContentTypes.`text/plain(UTF-8)`)
+        getFromResource("$name$.yml", ContentTypes.`text/plain(UTF-8)`)
       }
     } ~
       pathPrefix("docs") {

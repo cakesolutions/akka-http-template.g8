@@ -37,10 +37,13 @@ object ProjectPlugin extends AutoPlugin {
     publishArtifact in makePom := false,
     autoAPIMappings in Global := true,
     // scalastyle:off magic.number
+    // FIXME: The following should be tailored to match project requirements
     startYear in Global := Some(2017),
     // scalastyle:on magic.number
+    // FIXME: The following should be tailored to match project requirements
     licenses in Global :=
       Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
+    // FIXME: The following should be tailored to match project requirements
     headerLicense in Global := Some(
       HeaderLicense.Custom(
         """|Copyright: 2017 https://github.com/cakesolutions/sbt-cake/graphs

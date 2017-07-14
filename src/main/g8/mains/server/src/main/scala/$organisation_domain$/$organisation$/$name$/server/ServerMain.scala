@@ -3,7 +3,8 @@ package $organisation_domain$.$organisation$.$name$.server
 import akka.http.scaladsl.server.Directives._
 import cats.data.Validated
 import com.typesafe.config.Config
-import monix.reactive.Observable
+import monix.eval.Task
+
 import $organisation_domain$.$organisation$.$name$.core.api.BaseHttpHandler
 import $organisation_domain$.$organisation$.$name$.core.application.{ApplicationBootstrapping, ApplicationGlobalContext}
 import $organisation_domain$.$organisation$.$name$.core.application.workflow._
@@ -24,7 +25,7 @@ object ServerMain extends ApplicationBootstrapping {
     config: Config
   )(
     implicit globalContext: ApplicationGlobalContext
-  ): Workflow[Unit] = {
+  ): Task[Unit] = {
     validateConfig(config).flatMap(httpService)
   }
 
@@ -32,13 +33,13 @@ object ServerMain extends ApplicationBootstrapping {
     config: Config
   )(
     implicit globalContext: ApplicationGlobalContext
-  ): Layer[ServerConfig] = {
+  ): Task[ServerConfig] = {
     ValidatedServerConfig(config) match {
       case Validated.Valid(serverConfig) =>
-        Layer(Observable(serverConfig))
+        Task(serverConfig)
 
       case Validated.Invalid(errors) =>
-        Layer(Observable.raiseError(ConfigurationFailure(errors)))
+        Task.raiseError(ConfigurationFailure(errors))
     }
   }
 
@@ -46,7 +47,7 @@ object ServerMain extends ApplicationBootstrapping {
     validatedConfig: ServerConfig
   )(
     implicit globalContext: ApplicationGlobalContext
-  ): Layer[Unit] = {
+  ): Task[Unit] = {
     val http = validatedConfig.http
     val cores = CoreRoutes()
     val swagger = SwaggerRoutes(validatedConfig.swaggerPath)

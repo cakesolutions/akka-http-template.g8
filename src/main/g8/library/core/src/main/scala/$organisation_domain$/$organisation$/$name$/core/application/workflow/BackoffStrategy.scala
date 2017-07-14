@@ -7,30 +7,31 @@ import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.Positive
 
 /**
-  * TODO:
+  * A generic backoff strategy modeled as a lazy list of (finite) durations.
   */
 sealed trait BackoffStrategy {
 
   /**
-    * TODO:
+    * Time units that time delays will be calculated in.
     *
-    * @return
+    * @return time unit delays will be calculated in
     */
   def units: TimeUnit
 
   /**
-    * TODO:
+    * Generates a sequence of finite durations.
     *
-    * @return
+    * @return lazy list of (finite) durations
     */
   def sequenceGenerator: Stream[FiniteDuration] = {
     internalSequence.map(n => FiniteDuration(n.longValue(), units))
   }
 
   /**
-    * TODO:
+    * Underlying sequence of integers that represent the delays this backoff
+    * strategy will use.
     *
-    * @return
+    * @return lazy list of integers
     */
   private[workflow] def internalSequence: Stream[BigInt]
 }
@@ -54,7 +55,8 @@ final case class Linear(units: TimeUnit) extends BackoffStrategy {
 /**
   * A predefined strategy for granular control
   *
-  * @param data
+  * @param data predefined sequence of positive numbers that will be used by
+  *   this backoff strategy
   * @param units @see [[BackoffStrategy]]
   */
 final case class Defined(
@@ -94,7 +96,7 @@ final case class Fibonnaci(units: TimeUnit) extends BackoffStrategy {
   *   1, factor, Math.pow(factor,2), Math.pow(factor,3), Math.pow(factor,4)
   * }}
   *
-  * @param factor
+  * @param factor positive integer used as the base
   * @param units @see [[BackoffStrategy]]
   */
 final case class Exponential(
@@ -116,7 +118,7 @@ final case class Exponential(
   *   0, 1, Math.pow(2,factor), Math.pow(3,factor), Math.pow(4,factor)
   * }}
   *
-  * @param factor
+  * @param factor positive integer used as the exponent or power
   * @param units @see [[BackoffStrategy]]
   */
 final case class Polynomial(

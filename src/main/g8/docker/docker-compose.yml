@@ -25,8 +25,8 @@ services:
 
   server:
     # TODO: CO-???: set version using an build.sbt set environment variable
-    #image: akkarepo/server:\${SERVER_VERSION}
-    image: akkarepo/server
+    #image: $name$/server:\${SERVER_VERSION}
+    image: $name$/server
     healthcheck:
       test: ["CMD", "wget", "-qO", "-", "http://localhost:9000/health"]
       interval: 5s

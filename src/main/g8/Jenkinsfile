@@ -15,6 +15,9 @@ pipeline {
         ansiColor('xterm') {
           script {
             sh "sbt checkExternalBuildTools"
+            sh "sbt dockerComposeDown"
+            sh "docker images"
+            sh "docker ps -a"
           }
         }
       }

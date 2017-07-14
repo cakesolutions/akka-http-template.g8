@@ -3,6 +3,7 @@ package $organisation_domain$.$organisation$.$name$.server.api
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
+
 import $organisation_domain$.$organisation$.$name$.build.BuildInfo
 
 /**
