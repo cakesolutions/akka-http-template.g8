@@ -8,6 +8,6 @@ final class RetryExceededException(message: String)
 
   /** @see java.lang.Exception */
   override def toString: String = {
-    s"RetryExceededException($message)"
+    s"RetryExceededException(\$message)"
   }
 }

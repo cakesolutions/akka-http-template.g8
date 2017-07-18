@@ -61,7 +61,7 @@ private final class OnErrorRetryWithBackoff[A](
     } else {
       Task.raiseError(
         new RetryExceededException(
-          s"$backoff failed after $maxRetries tries"
+          s"\$backoff failed after \$maxRetries tries"
         )
       )
     }
