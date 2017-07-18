@@ -5,18 +5,28 @@ import monix.eval.Task
 import $organisation_domain$.$organisation$.$name$.core.application.workflow.internal._
 
 /**
-  * TODO:
+  * Package object for adding retry logic to tasks.
   */
 package object workflow {
 
   /**
-    * TODO:
+    * Implicit class used to add extra methods to tasks.
     *
-    * @param workflow
-    * @tparam X
+    * @param workflow task (e.g. representing the application bootstrapping
+    *   workflow) on which methods will be added
+    * @tparam X type of value that the task will create
     */
   implicit class OnError[X](workflow: Task[X]) {
 
+    /**
+      * Allows a task to be retried should it error or fail. Between retries, a
+      * retry strategy is applied - thus allowing for limited retries and
+      * backoff strategies to be applied.
+      *
+      * @param strategy retry strategy that will be applied should the task
+      *   error or fail
+      * @return task with the retry strategy applied
+      */
     def onError(strategy: RetryStrategy): Task[X] = {
       new OnErrorHelper(workflow, strategy).task()
     }

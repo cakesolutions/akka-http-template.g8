@@ -28,7 +28,7 @@ private object StartUpLogging {
   private def logEnvironmentData()(implicit log: LoggingAdapter): Unit = {
     sys.env.toList.sortBy(_._1).foreach {
       case (key, value) =>
-        log.info(s"environment: $key=$value")
+        log.info(s"environment: \$key=\$value")
     }
   }
 
@@ -37,23 +37,23 @@ private object StartUpLogging {
     val nonHeap = ManagementFactory.getMemoryMXBean.getNonHeapMemoryUsage
 
     log.info(
-      s"java.lang.memory.heap: committed=${pprintBytes(heap.getCommitted)}"
+      s"java.lang.memory.heap: committed=\${pprintBytes(heap.getCommitted)}"
     )
-    log.info(s"java.lang.memory.heap: initial=${pprintBytes(heap.getInit)}")
-    log.info(s"java.lang.memory.heap: maximum=${pprintBytes(heap.getMax)}")
-    log.info(s"java.lang.memory.heap: used=${pprintBytes(heap.getUsed)}")
+    log.info(s"java.lang.memory.heap: initial=\${pprintBytes(heap.getInit)}")
+    log.info(s"java.lang.memory.heap: maximum=\${pprintBytes(heap.getMax)}")
+    log.info(s"java.lang.memory.heap: used=\${pprintBytes(heap.getUsed)}")
     log.info(
       "java.lang.memory.non-heap: committed=" +
         pprintBytes(nonHeap.getCommitted)
     )
     log.info(
-      s"java.lang.memory.non-heap: initial=${pprintBytes(nonHeap.getInit)}"
+      s"java.lang.memory.non-heap: initial=\${pprintBytes(nonHeap.getInit)}"
     )
     log.info(
-      s"java.lang.memory.non-heap: maximum=${pprintBytes(nonHeap.getMax)}"
+      s"java.lang.memory.non-heap: maximum=\${pprintBytes(nonHeap.getMax)}"
     )
     log.info(
-      s"java.lang.memory.non-heap: used=${pprintBytes(nonHeap.getUsed)}"
+      s"java.lang.memory.non-heap: used=\${pprintBytes(nonHeap.getUsed)}"
     )
     log.info(
       "runtime: available-processors=" +
@@ -64,7 +64,7 @@ private object StartUpLogging {
   private def logPropertyData()(implicit log: LoggingAdapter): Unit = {
     sys.props.toList.sortBy(_._1).foreach {
       case (key, value) =>
-        log.info(s"property: $key=$value")
+        log.info(s"property: \$key=\$value")
     }
   }
 
@@ -73,7 +73,7 @@ private object StartUpLogging {
   )(implicit log: LoggingAdapter): Unit = {
     val configData = config.entrySet().asScala.toList.sortBy(_.getKey)
     for (entry <- configData) {
-      log.info(s"configuration: ${entry.getKey}=${entry.getValue.unwrapped()}")
+      log.info(s"configuration: \${entry.getKey}=\${entry.getValue.unwrapped()}")
     }
   }
 
@@ -83,11 +83,11 @@ private object StartUpLogging {
     if (byteValue < 0) {
       "undefined"
     } else if (byteValue < unit) {
-      s"${byteValue}B"
+      s"\${byteValue}B"
     } else {
       val exp = (Math.log(byteValue.toDouble) / Math.log(unit.toDouble)).toInt
       val pre = "kMGTPE".charAt(exp - 1)
-      f"${byteValue / Math.pow(unit.toDouble, exp.toDouble)}%.1f${pre}B"
+      f"\${byteValue / Math.pow(unit.toDouble, exp.toDouble)}%.1f\${pre}B"
     }
   }
 }

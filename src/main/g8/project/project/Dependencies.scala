@@ -43,7 +43,7 @@ object Dependencies {
   }
 
   object SbtPlugins {
-    val sbtCake: ModuleID = "net.cakesolutions" % "sbt-cake" % "1.1.4"
+    val sbtCake: ModuleID = "net.cakesolutions" % "sbt-cake" % "1.1.5"
     val scalafmt: ModuleID = "com.lucidchart" % "sbt-scalafmt" % "1.7"
     val sbtHeader: ModuleID = "de.heikoseeberger" % "sbt-header" % "2.0.0"
     val scalastyle: ModuleID =
