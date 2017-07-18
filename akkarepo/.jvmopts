@@ -1,4 +1,0 @@
--XX:MaxMetaspaceSize=256m
--Xss2m
--Xms1g
--Xmx1g

@@ -1,4 +1,4 @@
-package test_net.test_cakesolutions.akkarepo.core.application
+package $organisation_domain$.$organisation$.$name$.core.application
 
 import java.lang.management.ManagementFactory
 
@@ -12,6 +12,7 @@ import com.typesafe.config.Config
   * system information.
   */
 private object StartUpLogging {
+
   /**
     * Logs environment, JVM, properties and configurations data.
     * @param config Typesafe configuration object
@@ -51,7 +52,9 @@ private object StartUpLogging {
     log.info(
       s"java.lang.memory.non-heap: maximum=${pprintBytes(nonHeap.getMax)}"
     )
-    log.info(s"java.lang.memory.non-heap: used=${pprintBytes(nonHeap.getUsed)}")
+    log.info(
+      s"java.lang.memory.non-heap: used=${pprintBytes(nonHeap.getUsed)}"
+    )
     log.info(
       "runtime: available-processors=" +
         Runtime.getRuntime.availableProcessors().toString
@@ -67,9 +70,7 @@ private object StartUpLogging {
 
   private def logConfigurationData(
     config: Config
-  )(implicit
-    log: LoggingAdapter
-  ): Unit = {
+  )(implicit log: LoggingAdapter): Unit = {
     val configData = config.entrySet().asScala.toList.sortBy(_.getKey)
     for (entry <- configData) {
       log.info(s"configuration: ${entry.getKey}=${entry.getValue.unwrapped()}")

@@ -7,16 +7,16 @@ import akka.http.scaladsl.model.StatusCodes.InternalServerError
 import akka.http.scaladsl.server.{Directives, ExceptionHandler}
 
 /**
-  * TODO:
+  * Akka HTTP exception handler.
   */
 private object ExceptionHandling {
   import Directives._
 
   /**
-    * TODO:
+    * Akka HTTP exception handler that all endpoints should use.
     *
-    * @param log
-    * @return
+    * @param log logging interface
+    * @return exception handler
     */
   def exceptionHandler(implicit log: LoggingAdapter): ExceptionHandler =
     ExceptionHandler {

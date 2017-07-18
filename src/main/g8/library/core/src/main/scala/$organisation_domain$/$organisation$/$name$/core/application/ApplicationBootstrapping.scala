@@ -38,11 +38,14 @@ trait ApplicationBootstrapping {
   private[this] val systemExitAllowed: AtomicBoolean = new AtomicBoolean(false)
 
   /**
-    * TODO:
+    * Task defining how an application will bootstrap itself. Should a task
+    * return an error, then retry strategies may be applied to add some
+    * additional resilience.
     *
-    * @param config
-    * @param globalContext
-    * @return
+    * @param config unvalidate Typesafe configuration object that the
+    *   application will use
+    * @param globalContext global context that the application will use
+    * @return task defining how an application will bootstrap itself
     */
   protected def application(
     config: Config
@@ -93,7 +96,7 @@ trait ApplicationBootstrapping {
         uncaughtExceptionHandler(applicationName)
         jvmShutdownHandler()
 
-        // TODO: CO-111: Generate startup log information
+        StartUpLogging(config)
 
         ValueDiscard[Cancelable] {
           application(config)(globalContext)

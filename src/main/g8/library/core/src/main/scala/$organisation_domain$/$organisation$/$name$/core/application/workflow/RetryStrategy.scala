@@ -6,28 +6,28 @@ import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.Positive
 
 /**
-  * TODO:
+  * Retry strategy that is to be used in case of (for example) task failure.
   */
-// TODO: add in variants of onErrorRestartIf
 sealed trait RetryStrategy
 
 /**
-  * TODO:
+  * Keep retrying with no upper bound on the number of retry attempts.
   */
 case object RetryUnlimited extends RetryStrategy
 
 /**
-  * TODO:
+  * Retry a fixed or limited number of times.
   *
-  * @param n
+  * @param n positive integer indicating how many times we will attempt to retry
   */
 final case class RetryLimited(n: Int Refined Positive) extends RetryStrategy
 
 /**
-  * TODO:
+  * Keep retrying with no upper bound on the number of retry attempts. A backoff
+  * strategy (with jitter) is applied upon each retry attempt.
   *
-  * @param backoff
-  * @param jitter
+  * @param backoff backoff strategy that we will apply between retry attempts
+  * @param jitter random jitter that will be applied to each retry attempt
   */
 @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments"))
 final case class RetryUnlimitedWithBackoff(
@@ -36,11 +36,12 @@ final case class RetryUnlimitedWithBackoff(
 ) extends RetryStrategy
 
 /**
-  * TODO:
+  * Retry a fixed or limited number of times. A backoff strategy (with jitter)
+  * is applied upon each retry attempt.
   *
-  * @param n
-  * @param backoff
-  * @param jitter
+  * @param n positive integer indicating how many times we will attempt to retry
+  * @param backoff backoff strategy that we will apply between retry attempts
+  * @param jitter random jitter that will be applied to each retry attempt
   */
 @SuppressWarnings(Array("org.wartremover.warts.DefaultArguments"))
 final case class RetryLimitedWithBackoff(

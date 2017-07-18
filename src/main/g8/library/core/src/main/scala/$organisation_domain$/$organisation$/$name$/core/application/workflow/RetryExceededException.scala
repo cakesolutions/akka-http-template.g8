@@ -1,7 +1,9 @@
 package $organisation_domain$.$organisation$.$name$.core.application.workflow
 
 /**
-  * TODO:
+  * Exception message indicating that a task's retry logic has failed.
+  *
+  * @param message @see java.lang.Exception
   */
 final class RetryExceededException(message: String)
     extends Exception(message) {

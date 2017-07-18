@@ -5,16 +5,16 @@ import akka.http.scaladsl.model.StatusCodes.NotFound
 import akka.http.scaladsl.server.{Directives, RejectionHandler, ValidationRejection}
 
 /**
-  * TODO:
+  * Akka HTTP rejection handler.
   */
 private object RejectionHandling {
   import Directives._
 
   /**
-    * TODO:
+    * Akka HTTP rejection handler that all endpoints should use.
     *
-    * @param log
-    * @return
+    * @param log logging interface
+    * @return rejection handler
     */
   def rejectionHandler(implicit log: LoggingAdapter): RejectionHandler =
     RejectionHandler
