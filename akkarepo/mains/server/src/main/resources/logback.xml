@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="logback-include-appenders.xml"/>
+
+    <!-- Use the following to control log levels and filtering, at the package level -->
+    <logger name="akka" level="INFO"/>
+</configuration>
