@@ -7,7 +7,6 @@ import monix.eval.Task
 
 import $organisation_domain$.$organisation$.$name$.core.api.BaseHttpHandler
 import $organisation_domain$.$organisation$.$name$.core.application.{ApplicationBootstrapping, ApplicationGlobalContext}
-import $organisation_domain$.$organisation$.$name$.core.application.workflow._
 import $organisation_domain$.$organisation$.$name$.core.config.ConfigurationFailure
 import $organisation_domain$.$organisation$.$name$.server.api.{CoreRoutes, SwaggerRoutes}
 import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServerConfig

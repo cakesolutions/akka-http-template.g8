@@ -13,7 +13,7 @@ import akka.event.LoggingAdapter
 import com.github.levkhomich.akka.tracing.{TracingExtension, TracingExtensionImpl}
 import com.typesafe.config.{Config, ConfigFactory}
 import monix.eval.Task
-import monix.execution.{CancelableFuture, Scheduler}
+import monix.execution.{Cancelable, Scheduler}
 import org.slf4j.LoggerFactory
 
 import $organisation_domain$.$organisation$.$name$.core.utils.ValueDiscard
@@ -95,19 +95,19 @@ trait ApplicationBootstrapping {
 
         // TODO: CO-111: Generate startup log information
 
-        ValueDiscard[CancelableFuture[Unit]] {
+        ValueDiscard[Cancelable] {
           application(config)(globalContext)
-            .runAsync {
-              case None =>
+            .runOnComplete(_ match {
+              case Success(_) =>
                 log.info(s"Application \$applicationName started")
-              case Some(exn) =>
+              case Failure(exn) =>
                 log.error(
                   s"Application \$applicationName shutting down due to an error",
                   exn
                 )
                 systemExitAllowed.set(true)
                 sys.exit(1)
-            }
+            })
         }
     }
   }

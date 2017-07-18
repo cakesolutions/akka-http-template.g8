@@ -33,10 +33,10 @@ private final class OnErrorRetry[A](
 ) extends Iterator[Task[A]] {
 
   private[this] val taskGen = {
-    val gen = new StreamIterator(backoff.sequenceGenerator)
+    lazy val gen: Stream[BigInt] = BigInt(0) #:: gen.map(n => n + 1)
     val limitedGen = maxRetries.fold(gen)(n => gen.take(n.value))
 
-    limitedGen.map(_ => source)
+    new StreamIterator(limitedGen.map(_ => source))
   }
 
   /** @see [[Iterator]] */
@@ -51,7 +51,7 @@ private final class OnErrorRetry[A](
     } else {
       Task.raiseError(
         new RetryExceededException(
-          s"Limited retry failed after \${maxRetries.get.value} tries"
+          s"Limited retry failed after \$maxRetries tries"
         )
       )
     }

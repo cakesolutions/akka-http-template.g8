@@ -41,10 +41,12 @@ private final class OnErrorRetryWithBackoff[A](
 ) extends Iterator[Task[A]] {
 
   private[this] val delayedTaskGen = {
-    val gen = new StreamIterator(backoff.sequenceGenerator)
+    val gen = backoff.sequenceGenerator
     val limitedGen = maxRetries.fold(gen)(n => gen.take(n.value))
 
-    limitedGen.map(delay => source.delayExecution(withJitter(delay, jitter)))
+    new StreamIterator(
+      limitedGen.map(delay => source.delayExecution(withJitter(delay, jitter)))
+    )
   }
 
   /** @see [[Iterator]] */
@@ -59,7 +61,7 @@ private final class OnErrorRetryWithBackoff[A](
     } else {
       Task.raiseError(
         new RetryExceededException(
-          s"\$backoff failed after \${maxRetries.get.value} tries"
+          s"$backoff failed after $maxRetries tries"
         )
       )
     }
@@ -69,6 +71,7 @@ private final class OnErrorRetryWithBackoff[A](
     time: FiniteDuration,
     jitter: FiniteDuration
   ): FiniteDuration = {
+
     // offset is randomly chosen from the integer interval [-jitter, +jitter]
     val offset = Random.nextInt((2 * jitter.toNanos).toInt) - jitter.toNanos
 

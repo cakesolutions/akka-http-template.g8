@@ -20,9 +20,9 @@ object ProjectPlugin extends AutoPlugin {
 
   /** @see [[sbt.AutoPlugin]] */
   override val buildSettings = Seq(
-    name := "akkarepo",
-    organization := "net.cakesolutions",
-    buildInfoPackage := "net.cakesolutions.akkarepo.build",
+    name := "$name$",
+    organization := "$organisation_domain$.$organisation$",
+    buildInfoPackage := "$organisation_domain$.$organisation$.$name$.build",
     buildInfoKeys := Seq[BuildInfoKey](
       name,
       version,
@@ -38,20 +38,20 @@ object ProjectPlugin extends AutoPlugin {
     autoAPIMappings in Global := true,
     // scalastyle:off magic.number
     // FIXME: The following should be tailored to match project requirements
-    startYear in Global := Some(2017),
+    startYear := Some(2017),
     // scalastyle:on magic.number
     // FIXME: The following should be tailored to match project requirements
-    licenses in Global :=
+    licenses :=
       Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
     // FIXME: The following should be tailored to match project requirements
-    headerLicense in Global := Some(
+    headerLicense := Some(
       HeaderLicense.Custom(
-        """|Copyright: 2017 https://github.com/cakesolutions/sbt-cake/graphs
+        """|Copyright: 2017 https://github.com/cakesolutions/akka-http-template.g8/graphs
            |License: http://www.apache.org/licenses/LICENSE-2.0
            |""".stripMargin
       )
     ),
-    headerMappings in Global :=
+    headerMappings :=
       headerMappings.value ++
         Map(
           FileType("sbt") -> HeaderCommentStyle.CppStyleLineComment,

@@ -14,7 +14,7 @@ pipeline {
         ansiColor('xterm') {
           script {
             sh "mkdir template.g8; cp -fr src template.g8/"
-            sh "sbt new file://./template.g8 --name=akkarepo --project_description=ci-test --organisation_domain=net-test --organisation=cakesolutions-test"
+            sh "sbt new file://./template.g8 --name=akkarepo --project_description=ci-test --organisation_domain=test_net --organisation=test_cakesolutions"
           }
         }
       }

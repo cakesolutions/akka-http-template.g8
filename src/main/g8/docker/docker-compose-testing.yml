@@ -12,5 +12,6 @@ services:
       - "9410:9410"
 
   server:
-    ports:
-      - "9000:9000"
+    environment:
+      TEST_ACTOR_CREATOR_SERIALISATION: on
+      TEST_ACTOR_MESSAGE_SERIALISATION: on

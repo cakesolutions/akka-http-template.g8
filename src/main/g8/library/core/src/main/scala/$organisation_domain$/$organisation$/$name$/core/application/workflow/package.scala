@@ -16,6 +16,7 @@ package object workflow {
     * @tparam X
     */
   implicit class OnError[X](workflow: Task[X]) {
+
     def onError(strategy: RetryStrategy): Task[X] = {
       new OnErrorHelper(workflow, strategy).task()
     }

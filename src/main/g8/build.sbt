@@ -2,9 +2,7 @@ import net.cakesolutions.CakePlatformKeys.PlatformBundles
 
 import $organisation_domain$.$organisation$.Dependencies._
 
-// TODO: CO-43: SBT Resolvers
-
-// The following Settings need to be defined on a per project basis
+// FIXME: the following Settings need to be defined on a per project basis
 snapshotRepositoryResolver := None
 repositoryResolver := None
 issueManagementUrl := None
@@ -33,7 +31,7 @@ lazy val serverMain = project
   .settings(
     name := "server",
     mainClass in Compile :=
-      Some("net.cakesolutions.akkarepo.server.ServerMain"),
+      Some("$organisation_domain$.$organisation$.$name$.server.ServerMain"),
     libraryDependencies ++= Seq(
       Akka.contrib,
       Akka.Http.jsonSpray,
