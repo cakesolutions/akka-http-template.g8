@@ -26,6 +26,9 @@ pipeline {
           dir("akkarepo") {
             script {
               sh "sbt checkExternalBuildTools"
+              # TODO: CO-180: Verify docker-compose files
+              sh "docker-compose -f docker/docker-compose.yml -f docker/docker-compose-testing.yml config -q"
+              sh "docker-compose -f docker/docker-compose.yml -f docker/docker-compose-debug.yml config -q"
               sh "sbt dockerComposeDown"
               sh "docker images"
               sh "docker ps -a"
