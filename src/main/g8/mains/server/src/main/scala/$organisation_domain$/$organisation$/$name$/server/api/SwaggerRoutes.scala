@@ -7,14 +7,16 @@ import akka.http.scaladsl.server.Route
 import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServerConfig
 
 /**
-  * TODO:
+  * Factory defining the Swagger documentation endpoints.
   */
 object SwaggerRoutes {
 
   /**
-    * TODO:
+    * Factory method for generating Akka HTTP routes for serving Swagger API
+    * documentation.
     *
-    * @param swaggerPath
+    * @param swaggerPath path at which Swagger API documentation will be served
+    * @return Akka HTTP route
     */
   def apply(swaggerPath: ValidatedServerConfig.SwaggerPathString): Route =
     path("specs.yml") {

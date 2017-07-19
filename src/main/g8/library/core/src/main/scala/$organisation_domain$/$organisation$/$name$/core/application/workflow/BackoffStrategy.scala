@@ -106,7 +106,8 @@ final case class Exponential(
 
   /** @see [[BackoffStrategy]] */
   override val internalSequence: Stream[BigInt] = {
-    val linearSequence = BigInt(0) #:: internalSequence.map(n => n + 1)
+    lazy val linearSequence: Stream[BigInt] =
+      BigInt(0) #:: linearSequence.map(n => n + 1)
 
     linearSequence.map(n => BigInt(factor.value).pow(n.toInt))
   }
@@ -128,7 +129,8 @@ final case class Polynomial(
 
   /** @see [[BackoffStrategy]] */
   override val internalSequence: Stream[BigInt] = {
-    val linearSequence = BigInt(0) #:: internalSequence.map(n => n + 1)
+    lazy val linearSequence: Stream[BigInt] =
+      BigInt(0) #:: linearSequence.map(n => n + 1)
 
     linearSequence.map(n => n.pow(factor.value))
   }

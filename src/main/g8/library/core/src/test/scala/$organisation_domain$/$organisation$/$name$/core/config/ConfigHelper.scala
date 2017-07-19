@@ -5,7 +5,7 @@ import scala.util.Try
 import com.typesafe.config.{Config, ConfigFactory}
 
 /**
-  * TODO:
+  * Helper and utility functions for working with validated configuration.
   */
 object ConfigHelper {
 

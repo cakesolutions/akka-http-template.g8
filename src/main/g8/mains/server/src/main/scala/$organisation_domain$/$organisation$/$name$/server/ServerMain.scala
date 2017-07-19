@@ -15,7 +15,7 @@ import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServer
 // \$COVERAGE-OFF\$
 
 /**
-  * TODO:
+  * Service boostrapping.
   */
 object ServerMain extends ApplicationBootstrapping {
 

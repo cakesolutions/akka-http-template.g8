@@ -11,7 +11,7 @@ import eu.timepit.refined.numeric._
 import eu.timepit.refined.string._
 
 /**
-  * TODO:
+  * Validated server configuration.
   */
 object ValidatedServerConfig {
   type PositiveInt = Int Refined Positive
@@ -19,18 +19,19 @@ object ValidatedServerConfig {
     String Refined MatchesRegex[W.`"[a-zA-Z0-9_/.-]*/"`.T]
 
   /**
-    * TODO:
+    * Validated configuration for the services HTTP endpoints.
     *
-    * @param host
-    * @param port
+    * @param host hostname or IP address at which the HTTP server will listen
+    * @param port port at which the HTTP server will listen
     */
   sealed abstract case class HttpConfig(host: String, port: PositiveInt)
 
   /**
-    * TODO:
+    * Validated configuration for the server.
     *
-    * @param swaggerPath
-    * @param http
+    * @param swaggerPath URI path on which Swagger API documentation will be
+    *   served
+    * @param http validated HTTP configuration
     */
   sealed abstract case class ServerConfig(
     swaggerPath: SwaggerPathString,
@@ -38,9 +39,11 @@ object ValidatedServerConfig {
   )
 
   /**
-    * TODO:
+    * Factory for creating immutable, type safe validated configuration
+    * instances.
     *
-    * @return
+    * @param config raw and unchecked Typesafe configuration object
+    * @return validation errors or a validated configuration instance
     */
   @SuppressWarnings(Array("org.wartremover.warts.Any"))
   def apply(

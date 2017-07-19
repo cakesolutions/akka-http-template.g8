@@ -4,9 +4,10 @@ import cakesolutions.config.ValueError
 import cats.data.NonEmptyList
 
 /**
-  * TODO:
+  * Exception case class that holds the configuration failures that occured
+  * whilst attempting to validate a Typesafe configuration object.
   *
-  * @param errors
+  * @param errors non-empty list of configuration errors
   */
 final case class ConfigurationFailure(
   errors: NonEmptyList[ValueError]

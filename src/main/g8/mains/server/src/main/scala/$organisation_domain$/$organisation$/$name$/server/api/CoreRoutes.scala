@@ -7,12 +7,15 @@ import akka.http.scaladsl.server.Route
 import $organisation_domain$.$organisation$.$name$.build.BuildInfo
 
 /**
-  * TODO:
+  * Factory for defining core or common endpoints.
   */
 object CoreRoutes {
 
   /**
-    * TODO:
+    * Factory method for generating core Akka HTTP routes (e.g. health and
+    * version endpoints).
+    *
+    * @return Akka HTTP route
     */
   def apply(): Route =
     path("health") {
