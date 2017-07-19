@@ -2,9 +2,10 @@ package $organisation_domain$.$organisation$.$name$.core.application.workflow
 
 package internal
 
+import java.util.concurrent.ThreadLocalRandom
+
 import scala.collection.immutable.StreamIterator
 import scala.concurrent.duration._
-import scala.util.Random
 
 import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric.Positive
@@ -33,7 +34,7 @@ private[workflow] object OnErrorRetryUnlimitedWithBackoff {
   }
 }
 
-private final class OnErrorRetryWithBackoff[A](
+private[internal] final class OnErrorRetryWithBackoff[A](
   source: Task[A],
   maxRetries: Option[Int Refined Positive],
   backoff: BackoffStrategy,
@@ -67,14 +68,19 @@ private final class OnErrorRetryWithBackoff[A](
     }
   }
 
-  private def withJitter(
+  private[internal] def withJitter(
     time: FiniteDuration,
     jitter: FiniteDuration
   ): FiniteDuration = {
 
-    // offset is randomly chosen from the integer interval [-jitter, +jitter]
-    val offset = Random.nextInt((2 * jitter.toNanos).toInt) - jitter.toNanos
+    if (jitter == 0.nanoseconds) {
+      time
+    } else {
+      val randomGen = ThreadLocalRandom.current()
+      // offset is randomly chosen from the integer interval [-jitter, +jitter]
+      val offset = randomGen.nextLong(2 * jitter.toNanos) - jitter.toNanos
 
-    time + offset.nanoseconds
+      time + offset.nanoseconds
+    }
   }
 }

@@ -27,7 +27,7 @@ private[workflow] object OnErrorRetryUnlimited {
   }
 }
 
-private final class OnErrorRetry[A](
+private[internal] final class OnErrorRetry[A](
   source: Task[A],
   maxRetries: Option[Int Refined Positive]
 ) extends Iterator[Task[A]] {
