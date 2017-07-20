@@ -1,4 +1,3 @@
-# Default pipeline should go here.
 pipeline {
   agent {
     label 'sbt-slave'
