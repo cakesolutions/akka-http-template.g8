@@ -1,26 +1,28 @@
 package $organisation_domain$.$organisation$
 
+import net.cakesolutions.CakePlatformDependencies
 import sbt._
 
 /**
-  * Dependencies referenced in project auto-plugin and build code
+  * Dependencies referenced in project auto-plugin and build code. Projects
+  * should eventually manage **all** library dependencies themselves.
   */
 object Dependencies {
 
   val cats: ModuleID = "org.typelevel" %% "cats" % "0.9.0"
-  val config: ModuleID = "com.typesafe" % "config" % "1.3.1"
+  val config: ModuleID = CakePlatformDependencies.typesafeConfig
   val swagger: ModuleID = "org.webjars" % "swagger-ui" % "3.0.10"
   val validatedConfig: ModuleID =
     "net.cakesolutions" %% "validated-config" % "1.0.2"
 
   object Akka {
-    val version: String = "2.5.3"
+    val version: String = CakePlatformDependencies.Akka.version
 
     val actor: ModuleID = "com.typesafe.akka" %% "akka-actor" % version
     val contrib: ModuleID = "com.typesafe.akka" %% "akka-contrib" % version
 
     object Http {
-      val version: String = "10.0.9"
+      val version: String = CakePlatformDependencies.Akka.Http.version
 
       val core: ModuleID = "com.typesafe.akka" %% "akka-http" % version
       val jsonSpray: ModuleID =
@@ -44,10 +46,10 @@ object Dependencies {
 
   object SbtPlugins {
     val sbtCake: ModuleID = "net.cakesolutions" % "sbt-cake" % "1.1.5"
-    val scalafmt: ModuleID = "com.lucidchart" % "sbt-scalafmt" % "1.7"
-    val sbtHeader: ModuleID = "de.heikoseeberger" % "sbt-header" % "2.0.0"
+    val scalafmt: ModuleID = CakePlatformDependencies.SbtDependencies.scalafmt
+    val sbtHeader: ModuleID = CakePlatformDependencies.SbtDependencies.header
     val scalastyle: ModuleID =
-      "org.scalastyle" %% "scalastyle-sbt-plugin" % "0.8.0"
+      CakePlatformDependencies.SbtDependencies.scalastyle
   }
 
   object Refined {
