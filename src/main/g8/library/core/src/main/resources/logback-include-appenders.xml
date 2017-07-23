@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %date{ISO8601} [%thread] %-5level %logger{36} - %msg%n%X%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <if condition='isDefined("LOGSTASH_DESTINATION")'>
+        <then>
+            <appender name="STASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+                <destination>\${LOGSTASH_DESTINATION}</destination>
+
+                <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                    <timeZone>UTC</timeZone>
+                    <fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
+                    <customFields>{"environment": "\${environment:-unknown}", "service-version" : "\${service-version:-unknown}" }</customFields>
+                </encoder>
+            </appender>
+
+            <root>
+                <appender-ref ref="STASH"/>
+            </root>
+        </then>
+    </if>
+
+    <root>
+        <appender-ref ref="STDOUT" />
+    </root>
+</included>
