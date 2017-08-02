@@ -9,7 +9,7 @@ object Dependencies {
 
   val cats: ModuleID = "org.typelevel" %% "cats" % "0.9.0"
   val config: ModuleID = "com.typesafe" % "config" % "1.3.1"
-  val swagger: ModuleID = "org.webjars" % "swagger-ui" % "3.0.10"
+  val swagger: ModuleID = "org.webjars" % "swagger-ui" % "3.0.21"
   val validatedConfig: ModuleID =
     "net.cakesolutions" %% "validated-config" % "1.0.2"
 
@@ -43,15 +43,15 @@ object Dependencies {
   }
 
   object SbtPlugins {
-    val sbtCake: ModuleID = "net.cakesolutions" % "sbt-cake" % "1.1.7"
-    val scalafmt: ModuleID = "com.lucidchart" % "sbt-scalafmt" % "1.7"
+    val sbtCake: ModuleID = "net.cakesolutions" % "sbt-cake" % "1.1.10"
+    val scalafmt: ModuleID = "com.lucidchart" % "sbt-scalafmt" % "1.10"
     val sbtHeader: ModuleID = "de.heikoseeberger" % "sbt-header" % "2.0.0"
     val scalastyle: ModuleID =
-      "org.scalastyle" %% "scalastyle-sbt-plugin" % "0.8.0"
+      "org.scalastyle" %% "scalastyle-sbt-plugin" % "0.9.0"
   }
 
   object Refined {
-    val version: String = "0.8.0"
+    val version: String = "0.8.2"
 
     val core: ModuleID = "eu.timepit" %% "refined" % version
     val scalacheck: ModuleID = "eu.timepit" %% "refined-scalacheck" % version
