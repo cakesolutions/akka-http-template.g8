@@ -28,7 +28,7 @@ object CakeNewCommand extends sbt.AutoPlugin {
   }
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    commands += cakeNewCommand(dynverGitDescribeOutput.value.fold("NaN")(_.version))
+    commands += cakeNewCommand(dynverGitDescribeOutput.value.fold("unknown")(_.version))
   )
 
 }
