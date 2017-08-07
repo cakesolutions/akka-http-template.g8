@@ -17,11 +17,23 @@ object CakeNewCommand extends sbt.AutoPlugin {
 
   import CakeNewCommandUtil._
 
+  /**
+    * This AutoPlugin requires the plugins the Plugins matcher returned by this
+    * method.
+    * @see http://www.scala-sbt.org/0.13/api/#sbt.AutoPlugin
+    */
   override val requires: Plugins = DynVerPlugin
+
+  /**
+    * Determines whether this AutoPlugin will be activated for this project when
+    * the requires clause is satisfied.
+    * @see http://www.scala-sbt.org/0.13/api/#sbt.AutoPlugin
+    */
   override val trigger: PluginTrigger = allRequirements
 
-  def cakeNewCommand(version: String): Command =
-    Command(CommandName, BriefHelp, TemplateDetailed)(newCakeCommandParser)(runNewCake(version))
+  private def cakeNewCommand(version: String): Command =
+    Command(CommandName, BriefHelp, TemplateDetailed)(
+      newCakeCommandParser)(runNewCake(version))
 
   private def newCakeCommandParser(state: State): Parser[Seq[String]] =
     (token(Space) ~> repsep(StringBasic, token(Space))) | (token(EOF) map (_ => Nil))
@@ -34,21 +46,27 @@ object CakeNewCommand extends sbt.AutoPlugin {
     State.stateOps(newSate).::("new")
   }
 
+  /**
+    * The Settings to add in the scope of each project that activates this
+    * AutoPlugin.
+    * @see http://www.scala-sbt.org/0.13/api/#sbt.AutoPlugin
+    */
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    commands += cakeNewCommand(dynverGitDescribeOutput.value.fold("unknown")(_.version))
+    commands += cakeNewCommand(
+      dynverGitDescribeOutput.value.fold("unknown")(_.version))
   )
 
-}
+  private object CakeNewCommandUtil {
 
-object CakeNewCommandUtil {
+    val CommandName: String = "cakeNew"
 
-  val CommandName: String = "cakeNew"
+    val BriefHelp: (String, String) = CommandName -> "Creates a new sbt build."
 
-  val BriefHelp: (String, String) = CommandName -> "Creates a new sbt build."
+    val TemplateDetailed: String = CommandName + """ [--options] <template>
+      Reassign `akka_template_version` token and create a new sbt build based on the given template."""
 
-  val TemplateDetailed: String = CommandName + """ [--options] <template>
-  Reassign `akka_template_version` token and create a new sbt build based on the given template."""
+    val Token: String = "akka_template_version"
 
-  val Token: String = "akka_template_version"
+  }
 
 }
