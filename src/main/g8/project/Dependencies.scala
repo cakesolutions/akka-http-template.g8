@@ -42,14 +42,6 @@ object Dependencies {
     val reactive: ModuleID = "io.monix" %% "monix-reactive" % version
   }
 
-  object SbtPlugins {
-    val sbtCake: ModuleID = "net.cakesolutions" % "sbt-cake" % "1.1.10"
-    val scalafmt: ModuleID = "com.lucidchart" % "sbt-scalafmt" % "1.10"
-    val sbtHeader: ModuleID = "de.heikoseeberger" % "sbt-header" % "2.0.0"
-    val scalastyle: ModuleID =
-      "org.scalastyle" %% "scalastyle-sbt-plugin" % "0.9.0"
-  }
-
   object Refined {
     val version: String = "0.8.2"
 

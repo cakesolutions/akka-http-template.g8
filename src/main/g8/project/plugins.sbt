@@ -1,7 +1,4 @@
-import $organisation_domain$.$organisation$.Dependencies.SbtPlugins._
-
-unmanagedSources in Compile +=
-  baseDirectory.value / "project" / "Dependencies.scala"
+import $organisation_domain$.$organisation$.PluginDependencies._
 
 ivyLoggingLevel := UpdateLogging.Quiet
 scalacOptions in Compile ++= Seq("-feature", "-deprecation")
