@@ -64,3 +64,4 @@ object CakeNewCommand extends sbt.AutoPlugin {
   }
 
 }
+
