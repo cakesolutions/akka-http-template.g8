@@ -9,6 +9,7 @@ object Dependencies {
 
   val cats: ModuleID = "org.typelevel" %% "cats" % "0.9.0"
   val config: ModuleID = "com.typesafe" % "config" % "1.3.1"
+  // TODO: CO-117: Refactor server.conf to remove swagger version information
   val swagger: ModuleID = "org.webjars" % "swagger-ui" % "3.0.21"
   val validatedConfig: ModuleID =
     "net.cakesolutions" %% "validated-config" % "1.0.2"
