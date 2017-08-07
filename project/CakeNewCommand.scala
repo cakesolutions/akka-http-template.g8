@@ -1,3 +1,6 @@
+// Copyright: 2017 https://github.com/cakesolutions/akka-http-template.g8/graphs
+// License: http://www.apache.org/licenses/LICENSE-2.0
+
 import sbt.{Def, _}
 import sbt.complete.Parser
 import sbtdynver.DynVerPlugin
@@ -6,6 +9,10 @@ import sbtdynver.DynVerPlugin.autoImport._
 import Keys._
 import complete.DefaultParsers._
 
+/**
+  * It creates the `cakeNew` sbt command which calls `sbt new` with a
+  * dynamically calculated `akka_template_version` template token.
+  */
 object CakeNewCommand extends sbt.AutoPlugin {
 
   import CakeNewCommandUtil._
@@ -22,7 +29,7 @@ object CakeNewCommand extends sbt.AutoPlugin {
   private def runNewCake(version: String)(state: State, inputArg: Seq[String]): State = {
     val args = if(inputArg.nonEmpty) inputArg else state.remainingCommands
     val newSate = state.copy(
-      remainingCommands = args :+ s"--akka_template_version=$version"
+      remainingCommands = args :+ s"--$Token=$version"
     )
     State.stateOps(newSate).::("new")
   }
@@ -41,5 +48,7 @@ object CakeNewCommandUtil {
 
   val TemplateDetailed: String = CommandName + """ [--options] <template>
   Reassign `akka_template_version` token and create a new sbt build based on the given template."""
+
+  val Token: String = "akka_template_version"
 
 }
