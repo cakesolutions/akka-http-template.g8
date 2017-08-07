@@ -18,15 +18,19 @@ object CakeNewCommand extends sbt.AutoPlugin {
   import CakeNewCommandUtil._
 
   /**
-    * This AutoPlugin requires the plugins the Plugins matcher returned by this
-    * method.
     * @see http://www.scala-sbt.org/0.13/api/#sbt.AutoPlugin
     */
   override val requires: Plugins = DynVerPlugin
 
   /**
-    * Determines whether this AutoPlugin will be activated for this project when
-    * the requires clause is satisfied.
+    * @see http://www.scala-sbt.org/0.13/api/#sbt.AutoPlugin
+    */
+  override def projectSettings: Seq[Def.Setting[_]] = Seq(
+    commands += cakeNewCommand(
+      dynverGitDescribeOutput.value.fold("unknown")(_.version))
+  )
+
+  /**
     * @see http://www.scala-sbt.org/0.13/api/#sbt.AutoPlugin
     */
   override val trigger: PluginTrigger = allRequirements
@@ -45,16 +49,6 @@ object CakeNewCommand extends sbt.AutoPlugin {
     )
     State.stateOps(newSate).::("new")
   }
-
-  /**
-    * The Settings to add in the scope of each project that activates this
-    * AutoPlugin.
-    * @see http://www.scala-sbt.org/0.13/api/#sbt.AutoPlugin
-    */
-  override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    commands += cakeNewCommand(
-      dynverGitDescribeOutput.value.fold("unknown")(_.version))
-  )
 
   private object CakeNewCommandUtil {
 
