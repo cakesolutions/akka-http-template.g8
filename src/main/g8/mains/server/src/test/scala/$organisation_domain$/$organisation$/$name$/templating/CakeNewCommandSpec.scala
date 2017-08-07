@@ -13,7 +13,8 @@ class CakeNewCommandSpec extends WordSpec with Matchers {
 
     "replace akka_template_version token in README.md file" in {
       Source.fromFile("../../README.md").getLines.mkString should include(
-        "$akka_template_version$")
+        "$akka_template_version$"
+      )
     }
   }
 
