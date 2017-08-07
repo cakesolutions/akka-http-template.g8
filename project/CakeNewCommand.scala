@@ -8,7 +8,7 @@ import complete.DefaultParsers._
 
 object CakeNewCommand extends sbt.AutoPlugin {
 
-  import CajeNewCommandUtil._
+  import CakeNewCommandUtil._
 
   override val requires: Plugins = DynVerPlugin
   override val trigger: PluginTrigger = allRequirements
@@ -33,7 +33,7 @@ object CakeNewCommand extends sbt.AutoPlugin {
 
 }
 
-object CajeNewCommandUtil {
+object CakeNewCommandUtil {
 
   val CommandName: String = "cakeNew"
 
