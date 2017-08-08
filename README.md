@@ -9,7 +9,7 @@ To use, ensure that you have SBT 0.13.13 or higher installed.
 Then:
 
 ```
-sbt new cakesolutions/akka-http-template.g8
+sbt cakeNew cakesolutions/akka-http-template.g8
 ```
 
 You will be asked to fill out some properties required for correctly building your project, once complete `giter8` will
@@ -39,7 +39,7 @@ This template will be an evolving opinion, PRs are welcome.
 To test the output of the template you can run it locally with the following command:
 
 ```
-sbt new file://./akka-http-template.g8
+sbt cakeNew file://./akka-http-template.g8
 ```
 
 # Releasing of the `akka-http-template.g8` Template
