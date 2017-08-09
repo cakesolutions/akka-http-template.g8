@@ -6,8 +6,8 @@ import eu.timepit.refined._
 import eu.timepit.refined.auto._
 import eu.timepit.refined.numeric._
 import monix.eval.Task
-import monix.execution.atomic.AtomicLong
 import monix.execution.Scheduler.Implicits.global
+import monix.execution.atomic.AtomicLong
 import org.scalatest._
 
 // scalastyle:off magic.number
