@@ -105,8 +105,7 @@ trait ApplicationBootstrapping {
                 log.info(s"Application \$applicationName started")
               case Failure(exn) =>
                 log.error(
-                  s"Application \$applicationName shutting down due to an error",
-                  exn
+                  s"Application \$applicationName shutting down due to an error: \$exn"
                 )
                 systemExitAllowed.set(true)
                 sys.exit(1)
@@ -125,16 +124,14 @@ trait ApplicationBootstrapping {
           exn match {
             case NonFatal(_) =>
               log.error(
-                exn,
                 "BUG: non-fatal exception should have been handled by " +
-                  s"application \$applicationName!"
+                  s"application \$applicationName! \$exn"
               )
               systemExitAllowed.set(true)
               sys.exit(2)
             case _: Throwable =>
               log.error(
-                s"Fatal exception thrown by application \$applicationName",
-                exn
+                s"Fatal exception thrown by application \$applicationName: \$exn"
               )
               systemExitAllowed.set(true)
               sys.exit(3)
