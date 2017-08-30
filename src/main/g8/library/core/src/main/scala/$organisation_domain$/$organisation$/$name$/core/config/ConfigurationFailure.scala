@@ -11,10 +11,4 @@ import cats.data.NonEmptyList
   */
 final case class ConfigurationFailure(
   errors: NonEmptyList[ValueError]
-) extends Exception {
-
-  /** @see java.lang.Exception */
-  override def toString: String = {
-    s"ConfigurationFailure(\${errors.toList.mkString(",")})"
-  }
-}
+) extends Exception(errors.toList.mkString(", "))
