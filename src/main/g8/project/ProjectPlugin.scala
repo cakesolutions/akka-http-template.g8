@@ -38,7 +38,7 @@ object ProjectPlugin extends AutoPlugin {
     autoAPIMappings in Global := true,
     // scalastyle:off magic.number
     // FIXME: The following should be tailored to match project requirements
-    startYear := Some(2017),
+    startYear := Some(2018),
     // scalastyle:on magic.number
     // FIXME: The following should be tailored to match project requirements
     licenses :=
