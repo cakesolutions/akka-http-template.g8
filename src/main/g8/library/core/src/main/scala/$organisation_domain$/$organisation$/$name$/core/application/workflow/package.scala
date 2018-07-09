@@ -1,8 +1,8 @@
-package $organisation_domain$.$organisation$.$name$.core.application
+package $package_structure$.core.application
 
 import monix.eval.Task
 
-import $organisation_domain$.$organisation$.$name$.core.application.workflow.internal._
+import $package_structure$.core.application.workflow.internal._
 
 /**
   * Package object for adding retry logic to tasks.

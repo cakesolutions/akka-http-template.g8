@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.server.config
+package $package_structure$.server.config
 
 import cats.Applicative
 import cats.data.{NonEmptyList => NEL, Validated}

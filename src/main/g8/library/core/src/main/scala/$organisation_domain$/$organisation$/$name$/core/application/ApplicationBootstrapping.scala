@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.core.application
+package $package_structure$.core.application
 
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -16,7 +16,7 @@ import monix.eval.Task
 import monix.execution.{Cancelable, Scheduler}
 import org.slf4j.LoggerFactory
 
-import $organisation_domain$.$organisation$.$name$.core.utils.ValueDiscard
+import $package_structure$.core.utils.ValueDiscard
 
 // \$COVERAGE-OFF\$
 

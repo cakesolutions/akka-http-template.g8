@@ -1,16 +1,16 @@
-package $organisation_domain$.$organisation$.$name$.server
+package $package_structure$.server
 
 import akka.http.scaladsl.server.Directives._
 import cats.data.Validated
 import com.typesafe.config.Config
 import monix.eval.Task
 
-import $organisation_domain$.$organisation$.$name$.core.api.BaseHttpHandler
-import $organisation_domain$.$organisation$.$name$.core.application.{ApplicationBootstrapping, ApplicationGlobalContext}
-import $organisation_domain$.$organisation$.$name$.core.config.ConfigurationFailure
-import $organisation_domain$.$organisation$.$name$.server.api.{CoreRoutes, SwaggerRoutes}
-import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServerConfig
-import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServerConfig.ServerConfig
+import $package_structure$.core.api.BaseHttpHandler
+import $package_structure$.core.application.{ApplicationBootstrapping, ApplicationGlobalContext}
+import $package_structure$.core.config.ConfigurationFailure
+import $package_structure$.server.api.{CoreRoutes, SwaggerRoutes}
+import $package_structure$.server.config.ValidatedServerConfig
+import $package_structure$.server.config.ValidatedServerConfig.ServerConfig
 
 // \$COVERAGE-OFF\$
 

@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.server.api
+package $package_structure$.server.api
 
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
@@ -6,9 +6,9 @@ import cats.data.Validated
 import com.typesafe.config.Config
 import org.scalatest.{Matchers, WordSpec}
 
-import $organisation_domain$.$organisation$.$name$.core.config.{ConfigHelper, ConfigurationFailure}
-import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServerConfig
-import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServerConfig.ServerConfig
+import $package_structure$.core.config.{ConfigHelper, ConfigurationFailure}
+import $package_structure$.server.config.ValidatedServerConfig
+import $package_structure$.server.config.ValidatedServerConfig.ServerConfig
 
 object SwaggerRoutesSpec {
   val requiredEnvVars: Map[String, String] =

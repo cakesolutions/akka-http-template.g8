@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.core.application.workflow
+package $package_structure$.core.application.workflow
 
 package internal
 

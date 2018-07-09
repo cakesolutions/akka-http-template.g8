@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.core.actor
+package $package_structure$.core.actor
 
 import com.github.levkhomich.akka.tracing.{ActorTracing, TracingActorLogging}
 

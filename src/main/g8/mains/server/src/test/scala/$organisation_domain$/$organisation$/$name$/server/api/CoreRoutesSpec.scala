@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.server.api
+package $package_structure$.server.api
 
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.{Matchers, WordSpec}

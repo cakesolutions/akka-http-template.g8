@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$
+package $package_structure$
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.HttpRequest

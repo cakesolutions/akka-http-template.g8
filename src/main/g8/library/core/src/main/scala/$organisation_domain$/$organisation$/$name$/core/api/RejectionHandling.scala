@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.core.api
+package $package_structure$.core.api
 
 import akka.event.LoggingAdapter
 import akka.http.scaladsl.model.StatusCodes.NotFound

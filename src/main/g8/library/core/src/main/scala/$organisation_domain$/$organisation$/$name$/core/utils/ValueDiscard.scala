@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.core.utils
+package $package_structure$.core.utils
 
 /**
   * Function that allows values to be discarded in a visible way.

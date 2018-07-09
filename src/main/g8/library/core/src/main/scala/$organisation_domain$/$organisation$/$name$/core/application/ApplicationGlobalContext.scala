@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.core.application
+package $package_structure$.core.application
 
 import akka.actor.ActorSystem
 import akka.event.LoggingAdapter

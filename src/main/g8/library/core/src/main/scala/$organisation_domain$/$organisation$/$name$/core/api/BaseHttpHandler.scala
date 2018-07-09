@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.core.api
+package $package_structure$.core.api
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -12,7 +12,7 @@ import eu.timepit.refined.api.Refined
 import eu.timepit.refined.numeric._
 import monix.eval.Task
 
-import $organisation_domain$.$organisation$.$name$.core.application.ApplicationGlobalContext
+import $package_structure$.core.application.ApplicationGlobalContext
 
 /**
   * Common Http handler bootstrapping.

@@ -1,10 +1,10 @@
-package $organisation_domain$.$organisation$.$name$.server.api
+package $package_structure$.server.api
 
 import akka.http.scaladsl.model.{ContentTypes, StatusCodes, Uri}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 
-import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServerConfig
+import $package_structure$.server.config.ValidatedServerConfig
 
 /**
   * Factory defining the Swagger documentation endpoints.

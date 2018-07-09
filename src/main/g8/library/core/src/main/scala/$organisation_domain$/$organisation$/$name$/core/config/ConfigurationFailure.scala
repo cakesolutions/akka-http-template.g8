@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.core.config
+package $package_structure$.core.config
 
 import cats.data.NonEmptyList
 import net.cakesolutions.config.ValueError

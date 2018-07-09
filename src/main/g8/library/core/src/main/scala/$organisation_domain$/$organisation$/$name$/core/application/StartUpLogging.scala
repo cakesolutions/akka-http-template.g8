@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$.core.application
+package $package_structure$.core.application
 
 import java.lang.management.ManagementFactory
 

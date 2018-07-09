@@ -1,4 +1,4 @@
-package $organisation_domain$.$organisation$.$name$
+package $package_structure$
 
 import scala.concurrent.ExecutionContext
 
@@ -7,8 +7,8 @@ import akka.stream.ActorMaterializer
 import com.typesafe.config.Config
 import org.scalatest.{AsyncFreeSpec, Matchers}
 
-import $organisation_domain$.$organisation$.$name$.core.config.ConfigHelper
-import $organisation_domain$.$organisation$.$name$.server.config.ValidatedServerConfig
+import $package_structure$.core.config.ConfigHelper
+import $package_structure$.server.config.ValidatedServerConfig
 
 object RestApiIntegrationTest {
   val requiredEnvVars: Map[String, String] = {
