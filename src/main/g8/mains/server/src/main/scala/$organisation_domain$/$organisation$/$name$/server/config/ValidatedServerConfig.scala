@@ -1,6 +1,5 @@
 package $organisation_domain$.$organisation$.$name$.server.config
 
-import cakesolutions.config._
 import cats.data.{NonEmptyList => NEL, Validated}
 import cats.syntax.cartesian._
 import com.typesafe.config.Config
@@ -9,6 +8,7 @@ import eu.timepit.refined.api.Refined
 import eu.timepit.refined.auto._
 import eu.timepit.refined.numeric._
 import eu.timepit.refined.string._
+import net.cakesolutions.config._
 
 /**
   * Validated server configuration.

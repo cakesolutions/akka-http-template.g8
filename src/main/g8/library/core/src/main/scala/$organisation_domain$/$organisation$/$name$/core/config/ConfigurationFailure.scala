@@ -1,7 +1,7 @@
 package $organisation_domain$.$organisation$.$name$.core.config
 
-import cakesolutions.config.ValueError
 import cats.data.NonEmptyList
+import net.cakesolutions.config.ValueError
 
 /**
   * Exception case class that holds the configuration failures that occured

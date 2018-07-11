@@ -56,8 +56,7 @@ object BaseHttpHandler {
       Http().bindAndHandle(Route.handlerFlow(route), hostname, port.value)
 
     def httpCleanUp: Task[Unit] = Task.deferFutureAction { implicit ec =>
-      httpSocketBind
-        .flatMap(_.unbind())
+      httpSocketBind.flatMap(_.unbind()).map(_ => ())
     }
 
     Task
