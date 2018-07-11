@@ -1,0 +1,6 @@
+.idea/
+library/core/target/
+mains/server/target/
+project/project/target/
+project/target/
+target/
