@@ -73,7 +73,9 @@ private object StartUpLogging {
   )(implicit log: LoggingAdapter): Unit = {
     val configData = config.entrySet().asScala.toList.sortBy(_.getKey)
     for (entry <- configData) {
-      log.info(s"configuration: \${entry.getKey}=\${entry.getValue.unwrapped()}")
+      log.info(
+        s"configuration: \${entry.getKey}=\${entry.getValue.unwrapped()}"
+      )
     }
   }
 
