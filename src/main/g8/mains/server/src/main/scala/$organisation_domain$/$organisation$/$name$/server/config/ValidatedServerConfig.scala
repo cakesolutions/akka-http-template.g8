@@ -1,11 +1,10 @@
 package $organisation_domain$.$organisation$.$name$.server.config
 
+import cats.Applicative
 import cats.data.{NonEmptyList => NEL, Validated}
-import cats.syntax.cartesian._
 import com.typesafe.config.Config
 import eu.timepit.refined._
 import eu.timepit.refined.api.Refined
-import eu.timepit.refined.auto._
 import eu.timepit.refined.numeric._
 import eu.timepit.refined.string._
 import net.cakesolutions.config._
@@ -50,10 +49,15 @@ object ValidatedServerConfig {
     implicit config: Config
   ): Validated[NEL[ValueFailure], ServerConfig] = {
     via[ServerConfig]("server") { implicit config =>
-      (unchecked[SwaggerPathString]("swagger-ui.path") |@|
-        (unchecked[String](required("host", "NOT_SET")) |@|
-          unchecked[PositiveInt](required("port", "NOT_SET")))
-          .map(new HttpConfig(_, _) {})).map(new ServerConfig(_, _) {})
+      Applicative[ValidationFailure].map2(
+        unchecked[SwaggerPathString]("swagger-ui.path"),
+        Applicative[ValidationFailure].map2(
+          unchecked[String](required("host", "NOT_SET")),
+          unchecked[PositiveInt](
+            required("port", "NOT_SET")
+          )
+        )(new HttpConfig(_, _) {})
+      )(new ServerConfig(_, _) {})
     }
   }
 }
