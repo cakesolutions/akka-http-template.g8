@@ -104,8 +104,7 @@ trait ApplicationBootstrapping {
               case Success(_) =>
                 log.info(s"Application \$applicationName started")
               case Failure(exn) =>
-                log.error(
-                  exn,
+                log.error(exn,
                   s"Application \$applicationName shutting down due to an error"
                 )
                 systemExitAllowed.set(true)
@@ -124,16 +123,14 @@ trait ApplicationBootstrapping {
         def uncaughtException(thread: Thread, exn: Throwable): Unit =
           exn match {
             case NonFatal(_) =>
-              log.error(
-                exn,
+              log.error(exn,
                 "BUG: non-fatal exception should have been handled by " +
                   s"application \$applicationName!"
               )
               systemExitAllowed.set(true)
               sys.exit(2)
             case _: Throwable =>
-              log.error(
-                exn,
+              log.error(exn,
                 s"Fatal exception thrown by application \$applicationName"
               )
               systemExitAllowed.set(true)

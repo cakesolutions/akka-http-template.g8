@@ -53,9 +53,7 @@ object ValidatedServerConfig {
         unchecked[SwaggerPathString]("swagger-ui.path"),
         Applicative[ValidationFailure].map2(
           unchecked[String](required("host", "NOT_SET")),
-          unchecked[PositiveInt](
-            required("port", "NOT_SET")
-          )
+          unchecked[PositiveInt](required("port", "NOT_SET"))
         )(new HttpConfig(_, _) {})
       )(new ServerConfig(_, _) {})
     }
