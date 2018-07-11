@@ -31,7 +31,7 @@ lazy val serverMain = project
   .settings(
     name := "server",
     mainClass in Compile :=
-      Some("$organisation_domain$.$organisation$.$name$.server.ServerMain"),
+      Some("$package$.server.ServerMain"),
     libraryDependencies ++= Seq(
       Akka.contrib,
       Akka.Http.jsonSpray,

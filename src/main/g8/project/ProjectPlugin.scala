@@ -22,7 +22,7 @@ object ProjectPlugin extends AutoPlugin {
   override val buildSettings = Seq(
     name := "$name$",
     organization := "$organisation_domain$.$organisation$",
-    buildInfoPackage := "$package_structure$.build",
+    buildInfoPackage := "$package$.build",
     buildInfoKeys := Seq[BuildInfoKey](
       name,
       version,

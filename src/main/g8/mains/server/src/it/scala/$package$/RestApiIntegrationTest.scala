@@ -1,0 +1,64 @@
+package $package$
+
+import scala.concurrent.ExecutionContext
+
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import com.typesafe.config.Config
+import org.scalatest.{AsyncFreeSpec, Matchers}
+
+import $package$.core.config.ConfigHelper
+import $package$.server.config.ValidatedServerConfig
+
+object RestApiIntegrationTest {
+
+  val requiredEnvVars: Map[String, String] = {
+    // In CI environments, we use the eth0 or local-ipv4 address of the slave
+    // instead of localhost
+    val appHost = sys.env.getOrElse("CI_HOST", "localhost")
+
+    Map(
+      "SERVER_HOST" -> appHost,
+      "SERVER_PORT" -> "9000"
+    )
+  }
+
+  val optionalEnvVars: Map[String, String] = Map()
+}
+
+trait RestApiIntegrationTest extends AsyncFreeSpec with Matchers {
+
+  import ConfigHelper._
+  import RestApiIntegrationTest._
+
+  private val config: Config =
+    validateWithEnvironmentOverrides(
+      "application.conf"
+    )(
+      requiredEnvVars,
+      optionalEnvVars
+    ).get
+
+  private val validatedConfig = {
+    ValidatedServerConfig(config)
+      .getOrElse(fail("Failed to validate application.conf"))
+  }
+
+  val appUrl: String = {
+    val host = validatedConfig.http.host
+    val port = validatedConfig.http.port
+
+    s"http://\$host:\$port"
+  }
+
+  implicit val actorSystem: ActorSystem =
+    ActorSystem(actorSystemNameFrom(getClass), config)
+  implicit val materializer: ActorMaterializer = ActorMaterializer()
+  implicit val ec: ExecutionContext = ExecutionContext.global
+
+  private def actorSystemNameFrom(clazz: Class[_]) =
+    clazz.getName
+      .replace('.', '-')
+      .replace('_', '-')
+      .filter(_ != '\$')
+}
