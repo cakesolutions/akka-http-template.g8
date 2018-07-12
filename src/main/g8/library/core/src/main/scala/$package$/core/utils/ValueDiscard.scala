@@ -1,4 +1,4 @@
-package $package_structure$.core.utils
+package $package$.core.utils
 
 /**
   * Function that allows values to be discarded in a visible way.

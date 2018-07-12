@@ -16,7 +16,7 @@ import monix.eval.Task
 import monix.execution.{Cancelable, Scheduler}
 import org.slf4j.LoggerFactory
 
-import $package_structure$.core.utils.ValueDiscard
+import $package$.core.utils.ValueDiscard
 
 // \$COVERAGE-OFF\$
 
