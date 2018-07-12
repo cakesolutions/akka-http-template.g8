@@ -4,7 +4,7 @@ import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 
-import $package$.build.BuildInfo
+import $organisation_domain$.$organisation$.$name$.build.BuildInfo
 
 /**
   * Factory for defining core or common endpoints.
