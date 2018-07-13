@@ -43,3 +43,10 @@ lazy val serverMain = project
 lazy val root = project
   .in(file("."))
   .aggregate(core, serverMain)
+
+// This runs the same checks as the Verification stage of the Jenkins pipeline.
+addCommandAlias(
+  "verify",
+  ";scalastyle;test:scalastyle;it:scalastyle " +
+    ";sbt:scalafmt::test;scalafmt::test;test:scalafmt::test;it:scalafmt::test"
+)
