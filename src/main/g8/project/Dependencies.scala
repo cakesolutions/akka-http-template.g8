@@ -8,20 +8,19 @@ import sbt._
 object Dependencies {
 
   val cats: ModuleID = "org.typelevel" %% "cats" % "0.9.0"
-  val config: ModuleID = "com.typesafe" % "config" % "1.3.1"
+  val typesafeConfig: ModuleID = "com.typesafe" % "config" % "1.3.3"
   // TODO: CO-117: Refactor server.conf to remove swagger version information
   val swagger: ModuleID = "org.webjars" % "swagger-ui" % "3.0.21"
-  val validatedConfig: ModuleID =
-    "net.cakesolutions" %% "validated-config" % "1.0.2"
+  val validatedConfig: ModuleID = "net.cakesolutions" %% "validated-config" % "1.1.3"
 
   object Akka {
-    val version: String = "2.5.3"
+    val version: String = "2.5.13"
 
     val actor: ModuleID = "com.typesafe.akka" %% "akka-actor" % version
     val contrib: ModuleID = "com.typesafe.akka" %% "akka-contrib" % version
 
     object Http {
-      val version: String = "10.0.9"
+      val version: String = "10.1.3"
 
       val core: ModuleID = "com.typesafe.akka" %% "akka-http" % version
       val jsonSpray: ModuleID =
@@ -44,7 +43,7 @@ object Dependencies {
   }
 
   object Refined {
-    val version: String = "0.8.2"
+    val version: String = "0.9.2"
 
     val core: ModuleID = "eu.timepit" %% "refined" % version
     val scalacheck: ModuleID = "eu.timepit" %% "refined-scalacheck" % version

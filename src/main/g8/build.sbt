@@ -31,7 +31,7 @@ lazy val serverMain = project
   .settings(
     name := "server",
     mainClass in Compile :=
-      Some("$organisation_domain$.$organisation$.$name$.server.ServerMain"),
+      Some("$package$.server.ServerMain"),
     libraryDependencies ++= Seq(
       Akka.contrib,
       Akka.Http.jsonSpray,
@@ -43,3 +43,10 @@ lazy val serverMain = project
 lazy val root = project
   .in(file("."))
   .aggregate(core, serverMain)
+
+// This runs the same checks as the Verification stage of the Jenkins pipeline.
+addCommandAlias(
+  "verify",
+  ";scalastyle;test:scalastyle;it:scalastyle " +
+    ";sbt:scalafmt::test;scalafmt::test;test:scalafmt::test;it:scalafmt::test"
+)
